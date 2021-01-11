@@ -262,7 +262,8 @@ Table 1: Congestion Control Parameters]]></artwork>
             <artwork><![CDATA[module: ietf-dots-fast-trans
 
   augment-structure /dots-signal:dots-signal/dots-signal:message-type
-                    /dots-signal:signal-config/dots-signal:mitigating-config:
+                    /dots-signal:signal-config
+                    /dots-signal:mitigating-config:
     +-- max-payloads
     |  +-- (direction)?
     |  |  +--:(server-to-client-only)
@@ -571,21 +572,9 @@ module ietf-dots-fast-trans {
 
       <?rfc include='reference.RFC.8174'?>
 
-      <?rfc include='reference.RFC.8075'?>
-
       <?rfc include='reference.RFC.7959'?>
 
-      <?rfc include='reference.RFC.7641'?>
-
-      <?rfc include='reference.RFC.8132'?>
-
       <?rfc include='reference.RFC.8323'?>
-
-      <?rfc include='reference.RFC.8613'?>
-
-      <?rfc include='reference.RFC.8742'?>
-
-      <?rfc include='reference.RFC.8949'?>
 
       <?rfc include='reference.RFC.8791'?>
 
@@ -608,10 +597,6 @@ module ietf-dots-fast-trans {
       <?rfc include='reference.RFC.8612'?>
 
       <?rfc include='reference.RFC.8340'?>
-
-      <?rfc include='reference.RFC.6928'?>
-
-      <?rfc include='reference.RFC.8610'?>
 
       <reference anchor="Key-Map"
                  target="https://www.iana.org/assignments/dots/dots.xhtml#dots-signal-channel-cbor-key-values">
