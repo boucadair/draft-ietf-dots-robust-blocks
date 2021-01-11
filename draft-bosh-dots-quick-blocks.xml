@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc toc="yes"?>
+<?rfc tocompact="yes"?>
+<?rfc tocdepth="4"?>
+<?rfc tocindent="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<rfc category="std" docName="draft-bosh-dots-quick-blocks" ipr="trust200902">
+  <front>
+    <title abbrev="DOTS Fast Block Transmission">Distributed Denial-of-Service
+    Open Threat Signaling (DOTS) Signal Channel Configuration Attributes for
+    Faster Block Transmission</title>
+
+    <author fullname="Mohamed Boucadair" initials="M." surname="Boucadair">
+      <organization>Orange</organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city>Rennes</city>
+
+          <region></region>
+
+          <code>35000</code>
+
+          <country>France</country>
+        </postal>
+
+        <email>mohamed.boucadair@orange.com</email>
+      </address>
+    </author>
+
+    <author fullname="Jon Shallow" initials="J." surname="Shallow">
+      <organization></organization>
+
+      <address>
+        <postal>
+          <street></street>
+
+          <city></city>
+
+          <region></region>
+
+          <code></code>
+
+          <country>United Kingdom</country>
+        </postal>
+
+        <email>supjps-ietf@jpshallow.com</email>
+      </address>
+    </author>
+
+    <date />
+
+    <workgroup>DOTS</workgroup>
+
+    <keyword>Quick-Block</keyword>
+
+    <keyword>Robust-Block</keyword>
+
+    <keyword>R-Block</keyword>
+
+    <keyword>Tough-Block</keyword>
+
+    <keyword>Resilient-Block</keyword>
+
+    <keyword>Fast-Block</keyword>
+
+    <keyword>Resilience</keyword>
+
+    <keyword>Filtering</keyword>
+
+    <keyword>Faster transmission</keyword>
+
+    <keyword>Large amounts of data</keyword>
+
+    <keyword>Less packet interchange</keyword>
+
+    <keyword>Fast recovery</keyword>
+
+    <abstract>
+      <t>This document specifies new DOTS signal channel configuration
+      parameters that are negotiated between DOTS peers to enable the use of
+      Q-Block1 and Q-Block2 Options. These options enable faster transmission
+      rates for large amounts of data with less packet interchanges as well as
+      supporting faster recovery should any of the blocks get lost in
+      transmission.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="introduction" title="Introduction">
+      <t>The Constrained Application Protocol (CoAP) <xref
+      target="RFC7252"></xref>, although inspired by HTTP, was designed to use
+      UDP instead of TCP. The message layer of CoAP over UDP includes support
+      for reliable delivery, simple congestion control, and flow control.
+      <xref target="RFC7959"></xref> introduced the CoAP Block1 and Block2
+      Options to handle data records that cannot fit in a single IP packet, so
+      not having to rely on IP fragmentation and was further updated by <xref
+      target="RFC8323"></xref> for use over TCP, TLS, and WebSockets.</t>
+
+      <t>The CoAP Block1 and Block2 Options work well in environments where
+      there are no or minimal packet losses. These options operate
+      synchronously where each individual block has to be requested and can
+      only ask for (or send) the next block when the request for the previous
+      block has completed. Packet, and hence block transmission rate, is
+      controlled by Round Trip Times (RTTs).</t>
+
+      <t>There is a requirement for these blocks of data to be transmitted at
+      higher rates under network conditions where there may be asymmetrical
+      transient packet loss (i.e., responses may get dropped). An example is
+      when a network is subject to a Distributed Denial of Service (DDoS)
+      attack and there is a need for DDoS mitigation agents relying upon CoAP
+      to communicate with each other (e.g., <xref
+      target="I-D.ietf-dots-telemetry"></xref>). As a reminder, <xref
+      target="RFC7959"></xref> recommends the use of Confirmable (CON)
+      responses to handle potential packet loss. However, such a
+      recommendation does not work with a flooded pipe DDoS situation.</t>
+
+      <t>The block-wise transfer specified in <xref target="RFC7959"></xref>
+      covers the general case, but falls short in situations where packet loss
+      is highly asymmetrical. The mechanism specified in <xref
+      target="I-D.ietf-core-new-block"></xref> provides roughly similar
+      features to the Block1/Block2 Options. It provides additional properties
+      that are tailored towards the intended DOTS transmission. Concretely,
+      <xref target="I-D.ietf-core-new-block"></xref> primarily targets
+      applications such as DDoS Open Threat Signaling (DOTS) that can't use
+      Confirmable (CON) responses to handle potential packet loss and that
+      support application-specific mechanisms to assess whether the remote
+      peer is able to handle the messages sent by a CoAP endpoint (e.g., DOTS
+      heartbeats in Section 4.7 of <xref
+      target="I-D.ietf-dots-rfc8782-bis"></xref>).</t>
+
+      <t><xref target="I-D.ietf-core-new-block"></xref> includes guards to
+      prevent a CoAP agent from overloading the network by adopting an
+      aggressive sending rate. These guards are followed in addition to the
+      existing CoAP congestion control as specified in Section 4.7 of <xref
+      target="RFC7252"></xref>. Table 1 lists the CoAP attributes that are
+      used for </t>
+
+      <t><figure align="center">
+          <artwork align="center"><![CDATA[+---------------------+---------------+
+| Parameter Name      | Default Value |
++=====================+===============|
+| MAX_PAYLOADS        |            10 |
+| NON_TIMEOUT         |           2 s |
+| NON_RECEIVE_TIMEOUT |           4 s |
+| NON_PROBING_WAIT    |         247 s |
+| NON_PARTIAL_TIMEOUT |         247 s |
++---------------------+---------------+
+
+Table 1: Derived Protocol Parameters]]></artwork>
+        </figure></t>
+
+      <t>PROBING_RATE and other transmission parameters are negotiated between
+      DOTS peers as discussed in Section 4.5.2 of <xref
+      target="I-D.ietf-dots-rfc8782-bis"></xref>. Nevertheless, some of the
+      attributes listed in Table 1 are not supported. This document defines
+      new DOTS signal channel attributes that are meant to customize the
+      configuration of faster block transmission in a DOTS context.</t>
+    </section>
+
+    <section anchor="notation" title="Terminology">
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+      "OPTIONAL" in this document are to be interpreted as described in BCP 14
+      <xref target="RFC2119"></xref><xref target="RFC8174"></xref> when, and
+      only when, they appear in all capitals, as shown here.</t>
+
+      <t>Readers should be familiar with the terms and concepts defined in
+      <xref target="RFC7252"></xref> and <xref target="RFC8612"></xref>.</t>
+
+      <t>The terms "payload" and "body" are defined in <xref
+      target="RFC7959"></xref>. The term "payload" is thus used for the
+      content of a single CoAP message (i.e., a single block being
+      transferred), while the term "body" is used for the entire resource
+      representation that is being transferred in a block-wise fashion.</t>
+
+      <t>The meaning of the symbols in YANG tree diagrams are defined in <xref
+      target="RFC8340"></xref> and <xref target="RFC8791"></xref>.</t>
+
+      <t>(D)TLS is used for statements that apply to both Transport Layer
+      Security (TLS) <xref target="RFC8446"></xref> and Datagram Transport
+      Layer Security (DTLS) <xref target="RFC6347"></xref>. Specific terms are
+      used for any statement that applies to either protocol alone.</t>
+    </section>
+
+    <section title="DOTS Attributes for Faster Block Transmission">
+      <t>Section 6.2 of <xref target="I-D.ietf-core-new-block"></xref> defines
+      the following attributes that are used for congestion control
+      purposes:<list style="hanging">
+          <t hangText="MAX_PAYLOADS:">is the maximum number of payloads that
+          can be transmitted at any one time.</t>
+
+          <t hangText="NON_TIMEOUT:">is the maximum period of delay between
+          sending sets of MAX_PAYLOADS payloads for the same body. NON_TIMEOUT
+          has the same value as ACK_TIMEOUT (Section 4.8 of <xref
+          target="RFC7252"></xref>).</t>
+
+          <t hangText="NON_RECEIVE_TIMEOUT:">is the maximum time to wait for a
+          missing payload before requesting retransmission.
+          NON_RECEIVE_TIMEOUT has a value of twice NON_TIMEOUT.</t>
+
+          <t hangText="NON_PROBING_WAIT:">is used to limit the potential wait
+          needed calculated when using PROBING_WAIT. NON_PROBING_WAIT has the
+          same value as computed for EXCHANGE_LIFETIME (Section 4.8.2 of <xref
+          target="RFC7252"></xref>).</t>
+
+          <t hangText="NON_PARTIAL_TIMEOUT:">is used for expiring partially
+          received bodies. NON_PARTIAL_TIMEOUT has the same value as computed
+          for EXCHANGE_LIFETIME (Section 4.8.2 of <xref
+          target="RFC7252"></xref>).</t>
+        </list></t>
+
+      <t>These attributes are used together with PROBING_RATE parameter which
+      in CoAP indicates the average data rate that must not be exceeded by a
+      CoAP endpoint in sending to a peer endpoint that does not respond. The
+      single body of blocks will be subjected to PROBING_RATE (Section 4.7 of
+      <xref target="RFC7252"></xref>), not the individual packets. If the wait
+      time between sending bodies that are not being responded to based on
+      PROBING_RATE exceeds NON_PROBING_WAIT, then the gap time is limited to
+      NON_PROBING_WAIT.</t>
+
+      <t>Except MAX_PAYLOADS, all the aforementioned attributes can be derived
+      from attributes that can be negotiated between DOTS peers as per Section
+      4.5.2 of <xref target="I-D.ietf-dots-rfc8782-bis"></xref>. This document
+      augments the "ietf-dots-signal-channel" (dots-signal) DOTS signal YANG
+      module defined in <xref target="I-D.ietf-dots-rfc8782-bis"></xref> with
+      this additional attribute that can be negotiated between DOTS peers to
+      enable faster transmission: </t>
+
+      <t><list style="hanging">
+          <t hangText="max-payloads:">This attribute echoes the MAX_PAYLOADS
+          parameter in <xref target="I-D.ietf-core-new-block"></xref>.<vspace
+          blankLines="1" />This is an optional attribute.</t>
+        </list></t>
+
+      <t>For the sake of more flexible configuration, this document defines
+      also the following attribute:</t>
+
+      <t><list style="hanging">
+          <t hangText="non-timeout:">This attribute echoes the NON_TIMEOUT
+          parameter in <xref target="I-D.ietf-core-new-block"></xref>. The the
+          default value of this attribute is 'ack-timeout'.<vspace
+          blankLines="1" />This is an optional attribute.</t>
+        </list></t>
+
+      <t></t>
+    </section>
+
+    <section anchor="YANG" title="DOTS Fast Block Transmission YANG Module ">
+      <section title="Tree Structure">
+        <t>This document defines the YANG module "ietf-dots-fast-trans" (<xref
+        target="YANG"></xref>), which has the following tree structure:<figure>
+            <artwork><![CDATA[module: ietf-dots-fast-trans
+
+  augment-structure /dots-signal:dots-signal/dots-signal:message-type
+                    /dots-signal:signal-config/dots-signal:mitigating-config:
+    +-- max-payloads
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value?   uint16
+    |  |     +-- min-value?   uint16
+    |  +-- current-value?     uint16
+    +-- non-timeout
+       +-- (direction)?
+       |  +--:(server-to-client-only)
+       |     +-- max-value-decimal?   decimal64
+       |     +-- min-value-decimal?   decimal64
+       +-- current-value-decimal?     decimal64
+  augment-structure /dots-signal:dots-signal/dots-signal:message-type
+                    /dots-signal:signal-config/dots-signal:idle-config:
+    +-- max-payloads
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value?   uint16
+    |  |     +-- min-value?   uint16
+    |  +-- current-value?     uint16
+    +-- non-timeout
+       +-- (direction)?
+       |  +--:(server-to-client-only)
+       |     +-- max-value-decimal?   decimal64
+       |     +-- min-value-decimal?   decimal64
+       +-- current-value-decimal?     decimal64]]></artwork>
+          </figure></t>
+      </section>
+
+      <section title="YANG/JSON Mapping Parameters to CBOR">
+        <t>The YANG/JSON mapping parameters to CBOR are listed in Table
+        2.<list style="symbols">
+            <t>Note: Implementers must check that the mapping output provided
+            by their YANG-to-CBOR encoding schemes is aligned with the content
+            of Table 2.</t>
+          </list></t>
+
+        <t><figure align="center">
+            <artwork><![CDATA[+----------------------+------------+------+---------------+--------+
+|   Parameter Name     | YANG       | CBOR | CBOR Major    | JSON   |
+|                      | Type       | Key  |    Type &     | Type   |
+|                      |            |      | Information   |        |
++======================+============+======+===============+========+
+| ietf-dots-fast-trans:| container  | TBA1 | 5 map         | Object |
+|  max-payloads        |            |      |               |        |
++----------------------+------------+------+---------------+--------+
+| ietf-dots-fast-trans:| container  | TBA2 | 5 map         | Object |
+|   non-timeout        |            |      |               |        |
++----------------------+------------+------+---------------+--------+
+
+           Table 2: YANG/JSON Mapping Parameters to CBOR
+]]></artwork>
+          </figure></t>
+
+        <t></t>
+      </section>
+
+      <section title="YANG Module ">
+        <t>This module uses the data structure extension defined in <xref
+        target="RFC8791"></xref>.</t>
+
+        <t><figure>
+            <artwork><![CDATA[<CODE BEGINS> file "ietf-dots-fast-trans@2020-12-02.yang"
+module ietf-dots-fast-trans {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-dots-fast-trans";
+  prefix dots-fast;
+
+  import ietf-dots-signal-channel {
+    prefix dots-signal;
+    reference
+      "RFC YYYY: Distributed Denial-of-Service Open Threat
+                 Signaling (DOTS) Signal Channel Specification";
+  }
+  import ietf-yang-structure-ext {
+    prefix sx;
+    reference
+      "RFC 8791: YANG Data Structure Extensions";
+  }
+
+  organization
+    "IETF DDoS Open Threat Signaling (DOTS) Working Group";
+  contact
+    "WG Web:   <https://datatracker.ietf.org/wg/dots/>
+     WG List:  <mailto:dots@ietf.org>
+
+     Author:  Mohamed Boucadair
+              <mailto:mohamed.boucadair@orange.com>;
+
+     Author:  Jon Shallow
+              <mailto:ietf-supjps@jpshallow.com>";
+  description
+    "This module contains YANG definitions for the configuration
+     of parameters that can be negotiated between a DOTS client
+     and a DOTS server for faster block transmission.
+
+     Copyright (c) 2021 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Simplified BSD License
+     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (http://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX; see
+     the RFC itself for full legal notices.";
+
+  revision 2021-01-11 {
+    description
+      "Initial revision.";
+    reference
+      "RFC XXXX: Distributed Denial-of-Service Open Threat
+                 Signaling (DOTS) Configuration Attributes
+                 for Faster Block Transmission";
+  }
+
+  grouping fast-transmission-attributes {
+    description
+      "A set of DOTS signal channel session configuration
+       that are negotiated between DOTS agents when
+       making use of Q-Block1 and Q-Block2 Options.";
+    container max-payloads {
+      description
+        "Indicates the maximum number of payloads that
+         can be transmitted at any one time.";
+      choice direction {
+        description
+          "Indicates the communication direction in which the
+           data nodes can be included.";
+        case server-to-client-only {
+          description
+            "These data nodes appear only in a mitigation message
+             sent from the server to the client.";
+          leaf max-value {
+            type uint16;
+            description
+              "Maximum acceptable max-payloads value.";
+          }
+          leaf min-value {
+            type uint16;
+            description
+              "Minimum acceptable max-payloads value.";
+          }
+        }
+      }
+      leaf current-value {
+        type uint16;
+        default "10";
+        description
+          "Current max-payloads value.";
+      }
+    }
+    container non-timeout {
+      description
+        "Indicates the maximum period of delay between
+         sending sets of MAX_PAYLOADS payloads for the same
+         body. By default, this parameter has the same value
+         as ACK_TIMEOUT.";
+      choice direction {
+        description
+          "Indicates the communication direction in which the
+           data nodes can be included.";
+        case server-to-client-only {
+          description
+            "These data nodes appear only in a mitigation message
+             sent from the server to the client.";
+          leaf max-value-decimal {
+            type decimal64 {
+              fraction-digits 2;
+            }
+            units "seconds";
+            description
+              "Maximum ack-timeout value.";
+          }
+          leaf min-value-decimal {
+            type decimal64 {
+              fraction-digits 2;
+            }
+            units "seconds";
+            description
+              "Minimum ack-timeout value.";
+          }
+        }
+      }
+      leaf current-value-decimal {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units "seconds";
+        default "2";
+        description
+          "Current ack-timeout value.";
+      }
+    }
+  }
+
+  sx:augment-structure "/dots-signal:dots-signal"
+                     + "/dots-signal:message-type"
+                     + "/dots-signal:signal-config"
+                     + "/dots-signal:mitigating-config" {
+    description
+      "Indicates DOTS configuration parameters to use for 
+       faster transmission when a mitigation is active.";
+    uses fast-transmission-attributes;
+  }
+  sx:augment-structure "/dots-signal:dots-signal"
+                     + "/dots-signal:message-type"
+                     + "/dots-signal:signal-config"
+                     + "/dots-signal:idle-config" {
+    description
+      "Indicates DOTS configuration parameters to use for 
+       faster transmission when no mitigation is active.";
+    uses fast-transmission-attributes;
+  }
+}
+<CODE ENDS>]]></artwork>
+          </figure></t>
+      </section>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <section anchor="map" title="DOTS Signal Channel CBOR Mappings Registry">
+        <t>This specification registers the following parameters in the IANA
+        "DOTS Signal Channel CBOR Key Values" registry <xref
+        target="Key-Map"></xref>.</t>
+
+        <t><list style="symbols">
+            <t>Note to the RFC Editor: Please replace TBA1-TBA2 with the CBOR
+            keys that are assigned from the 128-255 range. Please update Table
+            2 accordingly.</t>
+          </list></t>
+
+        <t><figure align="center">
+            <artwork><![CDATA[+----------------------+-------+-------+------------+---------------+
+| Parameter Name       | CBOR  | CBOR  | Change     | Specification |
+|                      | Key   | Major | Controller | Document(s)   |
+|                      | Value | Type  |            |               |
++======================+=======+=======+============+===============+
+| ietf-dots-fast-trans:| TBA1  |   5   |    IESG    |   [RFCXXXX]   |
+|  max-payloads        |       |       |            |               |
++----------------------+-------+-------+------------+---------------+
+| ietf-dots-fast-trans:| TBA2  |   5   |    IESG    |   [RFCXXXX]   |
+|  non-timeout         |       |       |            |               |
++----------------------+-------+-------+------------+---------------+
+
+]]></artwork>
+          </figure></t>
+      </section>
+
+      <section anchor="yang-iana"
+               title="DOTS Signal Filtering Control YANG Module">
+        <t>This document requests IANA to register the following URI in the
+        "ns" subregistry within the "IETF XML Registry" <xref
+        target="RFC3688"></xref>:</t>
+
+        <t><figure>
+            <artwork><![CDATA[  URI: urn:ietf:params:xml:ns:yang:ietf-dots-fast-trans
+  Registrant Contact: The IESG.
+  XML: N/A; the requested URI is an XML namespace.
+
+]]></artwork>
+          </figure></t>
+
+        <t>This document requests IANA to register the following YANG module
+        in the "YANG Module Names" subregistry <xref target="RFC6020"></xref>
+        within the "YANG Parameters" registry.</t>
+
+        <t><figure>
+            <artwork><![CDATA[  Name: ietf-dots-fast-trans
+  Namespace: urn:ietf:params:xml:ns:yang:ietf-dots-fast-trans
+  Maintained by IANA: N
+  Prefix: dots-fast
+  Reference: RFC XXXX
+
+]]></artwork>
+          </figure></t>
+      </section>
+    </section>
+
+    <section anchor="security" title="Security Considerations">
+      <t>The security considerations for the DOTS signal channel protocol are
+      discussed in Section 11 of <xref
+      target="I-D.ietf-dots-rfc8782-bis"></xref>. </t>
+
+      <t>CoAP-specific security considerations are discussed in Section 11 of
+      <xref target="I-D.ietf-core-new-block"></xref>. </t>
+
+      <t>This document defines YANG data structures that are meant to be used
+      as an abstract representation in DOTS signal channel messages. As such,
+      the "ietf-dots-fast-trans" module does not introduce any new
+      vulnerabilities beyond those specified above.</t>
+    </section>
+
+    <section anchor="ack" title="Acknowledgements">
+      <t>TBC</t>
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      <?rfc include='reference.RFC.2119'?>
+
+      <?rfc include='reference.RFC.7252'?>
+
+      <?rfc include='reference.RFC.8174'?>
+
+      <?rfc include='reference.RFC.8075'?>
+
+      <?rfc include='reference.RFC.7959'?>
+
+      <?rfc include='reference.RFC.7641'?>
+
+      <?rfc include='reference.RFC.8132'?>
+
+      <?rfc include='reference.RFC.8323'?>
+
+      <?rfc include='reference.RFC.8613'?>
+
+      <?rfc include='reference.RFC.8742'?>
+
+      <?rfc include='reference.RFC.8949'?>
+
+      <?rfc include='reference.RFC.8791'?>
+
+      <?rfc include="reference.RFC.8446"?>
+
+      <?rfc include='reference.RFC.6347'?>
+
+      <?rfc include='reference.I-D.ietf-core-new-block'?>
+
+      <?rfc include='reference.I-D.ietf-dots-rfc8782-bis'?>
+
+      <?rfc include='reference.RFC.6020'?>
+
+      <?rfc include='reference.RFC.3688'?>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include="reference.I-D.ietf-dots-telemetry"?>
+
+      <?rfc include='reference.RFC.8612'?>
+
+      <?rfc include='reference.RFC.8340'?>
+
+      <?rfc include='reference.RFC.6928'?>
+
+      <?rfc include='reference.RFC.8610'?>
+
+      <reference anchor="Key-Map"
+                 target="https://www.iana.org/assignments/dots/dots.xhtml#dots-signal-channel-cbor-key-values">
+        <front>
+          <title>DOTS Signal Channel CBOR Key Values</title>
+
+          <author fullname="IANA">
+            <organization></organization>
+          </author>
+
+          <date />
+        </front>
+      </reference>
+    </references>
+  </back>
+</rfc>
