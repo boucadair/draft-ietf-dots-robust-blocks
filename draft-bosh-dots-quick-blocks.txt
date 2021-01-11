@@ -10,7 +10,7 @@ Expires: July 15, 2021                                  January 11, 2021
 
    Distributed Denial-of-Service Open Threat Signaling (DOTS) Signal
      Channel Configuration Attributes for Faster Block Transmission
-                      draft-bosh-dots-quick-blocks
+                    draft-bosh-dots-quick-blocks-00
 
 Abstract
 
@@ -146,7 +146,7 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
                   | NON_PARTIAL_TIMEOUT |         247 s |
                   +---------------------+---------------+
 
-                  Table 1: Derived Protocol Parameters
+                  Table 1: Congestion Control Parameters
 
    PROBING_RATE and other transmission parameters are negotiated between
    DOTS peers as discussed in Section 4.5.2 of

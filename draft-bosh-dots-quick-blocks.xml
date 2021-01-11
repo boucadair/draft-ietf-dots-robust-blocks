@@ -10,7 +10,8 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-bosh-dots-quick-blocks" ipr="trust200902">
+<rfc category="std" docName="draft-bosh-dots-quick-blocks-00"
+     ipr="trust200902">
   <front>
     <title abbrev="DOTS Fast Block Transmission">Distributed Denial-of-Service
     Open Threat Signaling (DOTS) Signal Channel Configuration Attributes for
@@ -155,7 +156,7 @@
 | NON_PARTIAL_TIMEOUT |         247 s |
 +---------------------+---------------+
 
-Table 1: Derived Protocol Parameters]]></artwork>
+Table 1: Congestion Control Parameters]]></artwork>
         </figure></t>
 
       <t>PROBING_RATE and other transmission parameters are negotiated between
