@@ -285,51 +285,51 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    used for both 'non-max-retransmit' and 'non-timeout' in idle and
    mitigation times.
 
-               Header: PUT (Code=0.03)
-               Uri-Path: ".well-known"
-               Uri-Path: "dots"
-               Uri-Path: "config"
-               Uri-Path: "sid=123"
-               Content-Format: "application/dots+cbor"
+        Header: PUT (Code=0.03)
+        Uri-Path: ".well-known"
+        Uri-Path: "dots"
+        Uri-Path: "config"
+        Uri-Path: "sid=123"
+        Content-Format: "application/dots+cbor"
 
-               {
-                 "ietf-dots-signal-channel:signal-config": {
-                   "mitigating-config": {
-                     "heartbeat-interval": {
-                       "current-value": 30
-                     },
-                     "missing-hb-allowed": {
-                       "current-value": 15
-                     },
-                     "probing-rate": {
-                       "current-value": 15
-                     },
-                     "max-retransmit": {
-                       "current-value": 3
-                     },
-                     "ack-timeout": {
-                       "current-value-decimal": "2.00"
-                     },
-                     "ack-random-factor": {
-                       "current-value-decimal": "1.50"
-                     },
-                     "ietf-dots-fast-trans:max-payloads": {
-                       "current-value": 10
-                     },
-                     "ietf-dots-fast-trans:non-max-retransmit": {
-                       "current-value": 3
-                     },
-                     "ietf-dots-fast-trans:non-timeout": {
-                       "current-value-decimal": "2.00"
-                     }
-                   },
-                   "idle-config": {
-                     "heartbeat-interval": {
-                       "current-value": 0
-                     },
-                     "max-retransmit": {
-                       "current-value": 3
-                     },
+        {
+          "ietf-dots-signal-channel:signal-config": {
+            "mitigating-config": {
+              "heartbeat-interval": {
+                "current-value": 30
+              },
+              "missing-hb-allowed": {
+                "current-value": 15
+              },
+              "probing-rate": {
+                "current-value": 15
+              },
+              "max-retransmit": {
+                "current-value": 3
+              },
+              "ack-timeout": {
+                "current-value-decimal": "2.00"
+              },
+              "ack-random-factor": {
+                "current-value-decimal": "1.50"
+              },
+              "ietf-dots-fast-trans:max-payloads": {
+                "current-value": 10
+              },
+              "ietf-dots-fast-trans:non-max-retransmit": {
+                "current-value": 3
+              },
+              "ietf-dots-fast-trans:non-timeout": {
+                "current-value-decimal": "2.00"
+              }
+            },
+            "idle-config": {
+              "heartbeat-interval": {
+                "current-value": 0
+              },
+              "max-retransmit": {
+                "current-value": 3
+              },
 
 
 
@@ -338,24 +338,24 @@ Boucadair & Shallow       Expires July 17, 2021                 [Page 6]
 Internet-Draft        DOTS Fast Block Transmission          January 2021
 
 
-                     "ack-timeout": {
-                       "current-value-decimal": "2.00"
-                     },
-                     "ack-random-factor": {
-                       "current-value-decimal": "1.50"
-                     },
-                     "ietf-dots-fast-trans:max-payloads": {
-                       "current-value": 15
-                     },
-                     "ietf-dots-fast-trans:non-max-retransmit": {
-                       "current-value": 3
-                     },
-                     "ietf-dots-fast-trans:non-timeout": {
-                       "current-value-decimal": "2.00"
-                     }
-                   }
-                 }
-               }
+              "ack-timeout": {
+                "current-value-decimal": "2.00"
+              },
+              "ack-random-factor": {
+                "current-value-decimal": "1.50"
+              },
+              "ietf-dots-fast-trans:max-payloads": {
+                "current-value": 15
+              },
+              "ietf-dots-fast-trans:non-max-retransmit": {
+                "current-value": 3
+              },
+              "ietf-dots-fast-trans:non-timeout": {
+                "current-value-decimal": "2.00"
+              }
+            }
+          }
+        }
 
       Figure 1: Example of PUT to Convey the Configuration Parameters
 
@@ -701,7 +701,7 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
 
    o  Note to the RFC Editor: Please replace TBA1/TBA2/TBA3 with the
       CBOR keys that are assigned from the 128-255 range.  Please update
-      the table accordingly.
+      Table 2 accordingly.
 
    +----------------------+-------+-------+------------+---------------+
    | Parameter Name       | CBOR  | CBOR  | Change     | Specification |
@@ -714,7 +714,7 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    | ietf-dots-fast-trans:| TBA2  |   5   |    IESG    |   [RFCXXXX]   |
    |  non-max-retransmit  |       |       |            |               |
    +----------------------+-------+-------+------------+---------------+
-   | ietf-dots-fast-trans:| TBA2  |   5   |    IESG    |   [RFCXXXX]   |
+   | ietf-dots-fast-trans:| TBA3  |   5   |    IESG    |   [RFCXXXX]   |
    |  non-timeout         |       |       |            |               |
    +----------------------+-------+-------+------------+---------------+
 
