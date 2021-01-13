@@ -257,7 +257,7 @@ Table 1: Congestion Control Parameters]]></artwork>
           NON_MAX_RETRANSMIT parameter in <xref
           target="I-D.ietf-core-new-block"></xref>. The default value of this
           attribute is 'max-retransmit'. Note that DOTS uses a default value
-          of '3' insteaf of '4' used for the generic CoAP use (Section 4.5.2
+          of '3' instead of '4' used for the generic CoAP use (Section 4.5.2
           of <xref target="I-D.ietf-dots-rfc8782-bis"></xref>). <vspace
           blankLines="1" />This is an optional attribute.</t>
 

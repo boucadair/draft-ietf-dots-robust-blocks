@@ -258,7 +258,7 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    non-max-retransmit:  This attribute echoes the NON_MAX_RETRANSMIT
       parameter in [I-D.ietf-core-new-block].  The default value of this
       attribute is 'max-retransmit'.  Note that DOTS uses a default
-      value of '3' insteaf of '4' used for the generic CoAP use
+      value of '3' instead of '4' used for the generic CoAP use
       (Section 4.5.2 of [I-D.ietf-dots-rfc8782-bis]).
 
       This is an optional attribute.
