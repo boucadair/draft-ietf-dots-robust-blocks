@@ -256,8 +256,10 @@ Table 1: Congestion Control Parameters]]></artwork>
           <t hangText="non-max-retransmit:">This attribute echoes the
           NON_MAX_RETRANSMIT parameter in <xref
           target="I-D.ietf-core-new-block"></xref>. The default value of this
-          attribute is 'max-retransmit'. <vspace blankLines="1" />This is an
-          optional attribute.</t>
+          attribute is 'max-retransmit'. Note that DOTS uses a default value
+          of '3' insteaf of '4' used for the generic CoAP use (Section 4.5.2
+          of <xref target="I-D.ietf-dots-rfc8782-bis"></xref>). <vspace
+          blankLines="1" />This is an optional attribute.</t>
 
           <t hangText="non-timeout:">This attribute echoes the NON_TIMEOUT
           parameter in <xref target="I-D.ietf-core-new-block"></xref>. The
@@ -265,7 +267,79 @@ Table 1: Congestion Control Parameters]]></artwork>
           blankLines="1" />This is an optional attribute.</t>
         </list></t>
 
-      <t></t>
+      <t>An example of PUT message to convey the configuration parameters for
+      the DOTS signal channel is depicted in <xref target="put"></xref>. In
+      this example, the 'max-payloads' is set to '15' when no mitigation is
+      active, while it is set to '10' when a mitigation is active. The same
+      value is used for both 'non-max-retransmit' and 'non-timeout' in idle
+      and mitigation times. </t>
+
+      <t><figure align="center" anchor="put"
+          title="Example of PUT to Convey the Configuration Parameters">
+          <artwork align="center"><![CDATA[     Header: PUT (Code=0.03)
+     Uri-Path: ".well-known"
+     Uri-Path: "dots"
+     Uri-Path: "config"
+     Uri-Path: "sid=123"
+     Content-Format: "application/dots+cbor"
+
+     {
+       "ietf-dots-signal-channel:signal-config": {
+         "mitigating-config": {
+           "heartbeat-interval": {
+             "current-value": 30
+           },
+           "missing-hb-allowed": {
+             "current-value": 15
+           },
+           "probing-rate": {
+             "current-value": 15
+           },
+           "max-retransmit": {
+             "current-value": 3
+           },
+           "ack-timeout": {
+             "current-value-decimal": "2.00"
+           },
+           "ack-random-factor": {
+             "current-value-decimal": "1.50"
+           },
+           "ietf-dots-fast-trans:max-payloads": {
+             "current-value": 10
+           },
+           "ietf-dots-fast-trans:non-max-retransmit": {
+             "current-value": 3
+           },
+           "ietf-dots-fast-trans:non-timeout": {
+             "current-value-decimal": "2.00"
+           }
+         },
+         "idle-config": {
+           "heartbeat-interval": {
+             "current-value": 0
+           },
+           "max-retransmit": {
+             "current-value": 3
+           },
+           "ack-timeout": {
+             "current-value-decimal": "2.00"
+           },
+           "ack-random-factor": {
+             "current-value-decimal": "1.50"
+           },
+           "ietf-dots-fast-trans:max-payloads": {
+             "current-value": 15
+           },
+           "ietf-dots-fast-trans:non-max-retransmit": {
+             "current-value": 3
+           },
+           "ietf-dots-fast-trans:non-timeout": {
+             "current-value-decimal": "2.00"
+           }
+         }
+       }
+     }]]></artwork>
+        </figure></t>
     </section>
 
     <section anchor="YANG" title="DOTS Fast Block Transmission YANG Module ">
@@ -471,7 +545,7 @@ module ietf-dots-fast-trans {
       }
       leaf current-value {
         type uint16;
-        default "4";
+        default "3";
         description
           "Current non-max-retransmit value.";
       }
