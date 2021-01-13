@@ -370,8 +370,6 @@ Table 1: Congestion Control Parameters]]></artwork>
        |     +-- min-value-decimal?   decimal64
        +-- current-value-decimal?     decimal64
 
-MUEB7362@WX-CNU432BCNF MINGW64 /c/Users/mueb7362/
-
   augment-structure /dots-signal:dots-signal/dots-signal:message-type
                     /dots-signal:signal-config/dots-signal:idle-config:
     +-- max-payloads
@@ -392,8 +390,6 @@ MUEB7362@WX-CNU432BCNF MINGW64 /c/Users/mueb7362/
        |     +-- max-value-decimal?   decimal64
        |     +-- min-value-decimal?   decimal64
        +-- current-value-decimal?     decimal64
-
-MUEB7362@WX-CNU432BCNF MINGW64 /c/Users/mueb7362/
 ]]></artwork>
           </figure></t>
       </section>
