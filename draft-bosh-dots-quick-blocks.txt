@@ -5,7 +5,7 @@
 DOTS                                                        M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                              J. Shallow
-Expires: July 17, 2021                                  January 13, 2021
+Expires: November 5, 2021                                    May 4, 2021
 
 
    Distributed Denial-of-Service Open Threat Signaling (DOTS) Signal
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 17, 2021.
+   This Internet-Draft will expire on November 5, 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Boucadair & Shallow       Expires July 17, 2021                 [Page 1]
+Boucadair & Shallow     Expires November 5, 2021                [Page 1]
 
-Internet-Draft        DOTS Fast Block Transmission          January 2021
+Internet-Draft        DOTS Fast Block Transmission              May 2021
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -67,18 +67,18 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  DOTS Attributes for Faster Block Transmission . . . . . . . .   4
    4.  DOTS Fast Block Transmission YANG Module  . . . . . . . . . .   7
-     4.1.  Tree Structure  . . . . . . . . . . . . . . . . . . . . .   7
+     4.1.  Tree Structure  . . . . . . . . . . . . . . . . . . . . .   8
      4.2.  YANG/JSON Mapping Parameters to CBOR  . . . . . . . . . .   9
-     4.3.  YANG Module . . . . . . . . . . . . . . . . . . . . . . .   9
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-     5.1.  DOTS Signal Channel CBOR Mappings Registry  . . . . . . .  13
-     5.2.  DOTS Signal Filtering Control YANG Module . . . . . . . .  14
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  14
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  16
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
+     4.3.  YANG Module . . . . . . . . . . . . . . . . . . . . . . .  10
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
+     5.1.  DOTS Signal Channel CBOR Mappings Registry  . . . . . . .  16
+     5.2.  DOTS Signal Filtering Control YANG Module . . . . . . . .  16
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  17
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Boucadair & Shallow       Expires July 17, 2021                 [Page 2]
+Boucadair & Shallow     Expires November 5, 2021                [Page 2]
 
-Internet-Draft        DOTS Fast Block Transmission          January 2021
+Internet-Draft        DOTS Fast Block Transmission              May 2021
 
 
    However, such a recommendation does not work with a flooded pipe DDoS
@@ -165,9 +165,9 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
 
 
 
-Boucadair & Shallow       Expires July 17, 2021                 [Page 3]
+Boucadair & Shallow     Expires November 5, 2021                [Page 3]
 
-Internet-Draft        DOTS Fast Block Transmission          January 2021
+Internet-Draft        DOTS Fast Block Transmission              May 2021
 
 
    14 [RFC2119][RFC8174] when, and only when, they appear in all
@@ -212,8 +212,8 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
       a value of twice NON_TIMEOUT.
 
    NON_PROBING_WAIT:  is used to limit the potential wait needed
-      calculated when using PROBING_WAIT.  NON_PROBING_WAIT has the same
-      value as computed for EXCHANGE_LIFETIME (Section 4.8.2 of
+      calculated when using PROBING_WAIT.  By default, NON_PROBING_WAIT
+      has the same value as EXCHANGE_LIFETIME (Section 4.8.2 of
       [RFC7252]).
 
 
@@ -221,13 +221,13 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
 
 
 
-Boucadair & Shallow       Expires July 17, 2021                 [Page 4]
+Boucadair & Shallow     Expires November 5, 2021                [Page 4]
 
-Internet-Draft        DOTS Fast Block Transmission          January 2021
+Internet-Draft        DOTS Fast Block Transmission              May 2021
 
 
    NON_PARTIAL_TIMEOUT:  is used for expiring partially received bodies.
-      NON_PARTIAL_TIMEOUT has the same value as computed for
+      By default, NON_PARTIAL_TIMEOUT has the same value as
       EXCHANGE_LIFETIME (Section 4.8.2 of [RFC7252]).
 
    These attributes are used together with PROBING_RATE parameter which
@@ -239,13 +239,10 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    PROBING_RATE exceeds NON_PROBING_WAIT, then the gap time is limited
    to NON_PROBING_WAIT.
 
-   Except MAX_PAYLOADS, all the aforementioned attributes can be derived
-   from attributes that can be negotiated between DOTS peers as per
-   Section 4.5.2 of [I-D.ietf-dots-rfc8782-bis].  This document augments
-   the "ietf-dots-signal-channel" (dots-signal) DOTS signal YANG module
-   defined in [I-D.ietf-dots-rfc8782-bis] with this additional attribute
-   that can be negotiated between DOTS peers to enable faster
-   transmission:
+   This document augments the "ietf-dots-signal-channel" (dots-signal)
+   DOTS signal YANG module defined in [I-D.ietf-dots-rfc8782-bis] with
+   these additional attributes that can be negotiated between DOTS peers
+   to enable faster transmission:
 
    max-payloads:  This attribute echoes the MAX_PAYLOADS parameter in
       [I-D.ietf-core-new-block].
@@ -269,19 +266,32 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
 
       This is an optional attribute.
 
+   non-probing-wait:  This attribute echoes the NON_PROBING_WAIT
+      parameter in [I-D.ietf-core-new-block].  The default value of this
+      attribute is 247s.
+
+      This is an optional attribute.
+
+
+
+
+
+
+Boucadair & Shallow     Expires November 5, 2021                [Page 5]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
+
+   non-partial-timeout:  This attribute echoes the NON_PARTIAL_TIMEOUT
+      parameter in [I-D.ietf-core-new-block].  The default value of this
+      attribute is 274s.
+
+      This is an optional attribute.
+
    An example of PUT message to convey the configuration parameters for
    the DOTS signal channel is depicted in Figure 1.  In this example,
    the 'max-payloads' is set to '15' when no mitigation is active, while
    it is set to '10' when a mitigation is active.  The same value is
-
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                 [Page 5]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
-
    used for both 'non-max-retransmit' and 'non-timeout' in idle and
    mitigation times.
 
@@ -320,7 +330,21 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
                 "current-value": 3
               },
               "ietf-dots-fast-trans:non-timeout": {
+
+
+
+Boucadair & Shallow     Expires November 5, 2021                [Page 6]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
+
                 "current-value-decimal": "2.00"
+              },
+              "ietf-dots-fast-trans:non-probing-wait": {
+                "current-value-decimal": "247.00"
+              },
+              "ietf-dots-fast-trans:non-partial-wait": {
+                "current-value-decimal": "247.00"
               }
             },
             "idle-config": {
@@ -330,14 +354,6 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
               "max-retransmit": {
                 "current-value": 3
               },
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                 [Page 6]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
-
               "ack-timeout": {
                 "current-value-decimal": "2.00"
               },
@@ -352,6 +368,12 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
               },
               "ietf-dots-fast-trans:non-timeout": {
                 "current-value-decimal": "2.00"
+              },
+              "ietf-dots-fast-trans:non-probing-wait": {
+                "current-value-decimal": "247.00"
+              },
+              "ietf-dots-fast-trans:non-partial-wait": {
+                "current-value-decimal": "247.00"
               }
             }
           }
@@ -361,38 +383,21 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
 
 4.  DOTS Fast Block Transmission YANG Module
 
+
+
+
+
+
+
+Boucadair & Shallow     Expires November 5, 2021                [Page 7]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
+
 4.1.  Tree Structure
 
    This document defines the YANG module "ietf-dots-fast-trans"
    (Section 4), which has the following tree structure:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                 [Page 7]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
 
  module: ietf-dots-fast-trans
 
@@ -412,6 +417,18 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
      |  |     +-- min-value?   uint16
      |  +-- current-value?     uint16
      +-- non-timeout
+     |  +-- (direction)?
+     |  |  +--:(server-to-client-only)
+     |  |     +-- max-value-decimal?   decimal64
+     |  |     +-- min-value-decimal?   decimal64
+     |  +-- current-value-decimal?     decimal64
+     +-- non-probing-wait
+     |  +-- (direction)?
+     |  |  +--:(server-to-client-only)
+     |  |     +-- max-value-decimal?   decimal64
+     |  |     +-- min-value-decimal?   decimal64
+     |  +-- current-value-decimal?     decimal64
+     +-- non-partial-wait:
         +-- (direction)?
         |  +--:(server-to-client-only)
         |     +-- max-value-decimal?   decimal64
@@ -425,6 +442,14 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
      |  |  +--:(server-to-client-only)
      |  |     +-- max-value?   uint16
      |  |     +-- min-value?   uint16
+
+
+
+Boucadair & Shallow     Expires November 5, 2021                [Page 8]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
+
      |  +-- current-value?     uint16
      +-- non-max-retransmit
      |  +-- (direction)?
@@ -433,22 +458,23 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
      |  |     +-- min-value?   uint16
      |  +-- current-value?     uint16
      +-- non-timeout
+     |  +-- (direction)?
+     |  |  +--:(server-to-client-only)
+     |  |     +-- max-value-decimal?   decimal64
+     |  |     +-- min-value-decimal?   decimal64
+     |  +-- current-value-decimal?     decimal64
+     +-- non-probing-wait
+     |  +-- (direction)?
+     |  |  +--:(server-to-client-only)
+     |  |     +-- max-value-decimal?   decimal64
+     |  |     +-- min-value-decimal?   decimal64
+     |  +-- current-value-decimal?     decimal64
+     +-- non-partial-wait:
         +-- (direction)?
         |  +--:(server-to-client-only)
         |     +-- max-value-decimal?   decimal64
         |     +-- min-value-decimal?   decimal64
         +-- current-value-decimal?     decimal64
-
-
-
-
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                 [Page 8]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
 
 4.2.  YANG/JSON Mapping Parameters to CBOR
 
@@ -457,6 +483,28 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    o  Note: Implementers must check that the mapping output provided by
       their YANG-to-CBOR encoding schemes is aligned with the content of
       Table 2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair & Shallow     Expires November 5, 2021                [Page 9]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
 
    +----------------------+------------+------+---------------+--------+
    |   Parameter Name     | YANG       | CBOR | CBOR Major    | JSON   |
@@ -472,6 +520,12 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    | ietf-dots-fast-trans:| container  | TBA3 | 5 map         | Object |
    |   non-timeout        |            |      |               |        |
    +----------------------+------------+------+---------------+--------+
+   | ietf-dots-fast-trans:| container  | TBA4 | 5 map         | Object |
+   |   non-probing-wait   |            |      |               |        |
+   +----------------------+------------+------+---------------+--------+
+   | ietf-dots-fast-trans:| container  | TBA5 | 5 map         | Object |
+   |   non-partial-wait   |            |      |               |        |
+   +----------------------+------------+------+---------------+--------+
 
               Table 2: YANG/JSON Mapping Parameters to CBOR
 
@@ -479,7 +533,7 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
 
    This module uses the data structure extension defined in [RFC8791].
 
-   <CODE BEGINS> file "ietf-dots-fast-trans@2020-12-02.yang"
+   <CODE BEGINS> file "ietf-dots-fast-trans@2020-05-04.yang"
    module ietf-dots-fast-trans {
      yang-version 1.1;
      namespace "urn:ietf:params:xml:ns:yang:ietf-dots-fast-trans";
@@ -498,16 +552,16 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
      }
 
      organization
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                 [Page 9]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
-
        "IETF DDoS Open Threat Signaling (DOTS) Working Group";
      contact
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 10]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
+
        "WG Web:   <https://datatracker.ietf.org/wg/dots/>
         WG List:  <mailto:dots@ietf.org>
 
@@ -534,7 +588,7 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
         This version of this YANG module is part of RFC XXXX; see
         the RFC itself for full legal notices.";
 
-     revision 2021-01-11 {
+     revision 2021-05-04 {
        description
          "Initial revision.";
        reference
@@ -554,16 +608,16 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
             can be transmitted at any one time.";
          choice direction {
            description
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                [Page 10]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
-
              "Indicates the communication direction in which the
               data nodes can be included.";
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 11]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
+
            case server-to-client-only {
              description
                "These data nodes appear only in a mitigation message
@@ -610,16 +664,16 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
            description
              "Current non-max-retransmit value.";
          }
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                [Page 11]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
-
        }
        container non-timeout {
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 12]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
+
          description
            "Indicates the maximum period of delay between
             sending sets of MAX_PAYLOADS payloads for the same
@@ -661,19 +715,106 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
              "Current ack-timeout value.";
          }
        }
+       container non-probing-wait {
+         description
+           "Is used to limit the potential wait needed calculated
+            when using probing-rate.";
+         choice direction {
+           description
+             "Indicates the communication direction in which the
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 13]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
+
+              data nodes can be included.";
+           case server-to-client-only {
+             description
+               "These data nodes appear only in a mitigation message
+                sent from the server to the client.";
+             leaf max-value-decimal {
+               type decimal64 {
+                 fraction-digits 2;
+               }
+               units "seconds";
+               description
+                 "Maximum non-probing-wait value.";
+             }
+             leaf min-value-decimal {
+               type decimal64 {
+                 fraction-digits 2;
+               }
+               units "seconds";
+               description
+                 "Minimum non-probing-wait value.";
+             }
+           }
+         }
+         leaf current-value-decimal {
+           type decimal64 {
+             fraction-digits 2;
+           }
+           units "seconds";
+           default "247";
+           description
+             "Current non-probing-wait value.";
+         }
+       }
+       container non-partial-wait {
+         description
+           "Is used for expiring partially received bodies.";
+         choice direction {
+           description
+             "Indicates the communication direction in which the
+              data nodes can be included.";
+           case server-to-client-only {
+             description
+               "These data nodes appear only in a mitigation message
+                sent from the server to the client.";
+             leaf max-value-decimal {
+               type decimal64 {
+                 fraction-digits 2;
+               }
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 14]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
+
+               units "seconds";
+               description
+                 "Maximum non-partial-wait value.";
+             }
+             leaf min-value-decimal {
+               type decimal64 {
+                 fraction-digits 2;
+               }
+               units "seconds";
+               description
+                 "Minimum non-partial-wait value.";
+             }
+           }
+         }
+         leaf current-value-decimal {
+           type decimal64 {
+             fraction-digits 2;
+           }
+           units "seconds";
+           default "247";
+           description
+             "Current non-partial-wait value.";
+         }
+       }
      }
 
      sx:augment-structure "/dots-signal:dots-signal"
                         + "/dots-signal:message-type"
                         + "/dots-signal:signal-config"
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                [Page 12]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
-
                         + "/dots-signal:mitigating-config" {
        description
          "Indicates DOTS configuration parameters to use for
@@ -691,6 +832,15 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
      }
    }
    <CODE ENDS>
+
+
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 15]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
 
 5.  IANA Considerations
 
@@ -717,17 +867,12 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    | ietf-dots-fast-trans:| TBA3  |   5   |    IESG    |   [RFCXXXX]   |
    |  non-timeout         |       |       |            |               |
    +----------------------+-------+-------+------------+---------------+
-
-
-
-
-
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                [Page 13]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
+   | ietf-dots-fast-trans:| TBA4  |   5   |    IESG    |   [RFCXXXX]   |
+   |  non-probing-wait    |       |       |            |               |
+   +----------------------+-------+-------+------------+---------------+
+   | ietf-dots-fast-trans:| TBA5  |   5   |    IESG    |   [RFCXXXX]   |
+   |  non-partial-wait    |       |       |            |               |
+   +----------------------+-------+-------+------------+---------------+
 
 
 5.2.  DOTS Signal Filtering Control YANG Module
@@ -743,6 +888,15 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    This document requests IANA to register the following YANG module in
    the "YANG Module Names" subregistry [RFC6020] within the "YANG
    Parameters" registry.
+
+
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 16]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
 
      Name: ietf-dots-fast-trans
      Namespace: urn:ietf:params:xml:ns:yang:ietf-dots-fast-trans
@@ -775,22 +929,14 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    [I-D.ietf-core-new-block]
               Boucadair, M. and J. Shallow, "Constrained Application
               Protocol (CoAP) Block-Wise Transfer Options for Faster
-              Transmission", draft-ietf-core-new-block-04 (work in
-              progress), January 2021.
-
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                [Page 14]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
+              Transmission", draft-ietf-core-new-block-11 (work in
+              progress), April 2021.
 
    [I-D.ietf-dots-rfc8782-bis]
               Boucadair, M., Shallow, J., and T. Reddy.K, "Distributed
               Denial-of-Service Open Threat Signaling (DOTS) Signal
-              Channel Specification", draft-ietf-dots-rfc8782-bis-04
-              (work in progress), December 2020.
+              Channel Specification", draft-ietf-dots-rfc8782-bis-06
+              (work in progress), March 2021.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -800,6 +946,13 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
    [RFC3688]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688,
               DOI 10.17487/RFC3688, January 2004,
               <https://www.rfc-editor.org/info/rfc3688>.
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 17]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
 
    [RFC6020]  Bjorklund, M., Ed., "YANG - A Data Modeling Language for
               the Network Configuration Protocol (NETCONF)", RFC 6020,
@@ -834,14 +987,6 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
 
-
-
-
-Boucadair & Shallow       Expires July 17, 2021                [Page 15]
-
-Internet-Draft        DOTS Fast Block Transmission          January 2021
-
-
    [RFC8791]  Bierman, A., Bjoerklund, M., and K. Watsen, "YANG Data
               Structure Extensions", RFC 8791, DOI 10.17487/RFC8791,
               June 2020, <https://www.rfc-editor.org/info/rfc8791>.
@@ -849,14 +994,21 @@ Internet-Draft        DOTS Fast Block Transmission          January 2021
 8.2.  Informative References
 
    [I-D.ietf-dots-telemetry]
-              Boucadair, M., Reddy.K, T., Doron, E., chenmeiling, c.,
-              and J. Shallow, "Distributed Denial-of-Service Open Threat
+              Boucadair, M., Reddy, T., Doron, E., Chen, M., and J.
+              Shallow, "Distributed Denial-of-Service Open Threat
               Signaling (DOTS) Telemetry", draft-ietf-dots-telemetry-15
               (work in progress), December 2020.
 
    [Key-Map]  IANA, "DOTS Signal Channel CBOR Key Values",
               <https://www.iana.org/assignments/dots/dots.xhtml#dots-
               signal-channel-cbor-key-values>.
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 18]
+
+Internet-Draft        DOTS Fast Block Transmission              May 2021
+
 
    [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
               BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
@@ -893,4 +1045,20 @@ Authors' Addresses
 
 
 
-Boucadair & Shallow       Expires July 17, 2021                [Page 16]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair & Shallow     Expires November 5, 2021               [Page 19]
