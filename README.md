@@ -1,4 +1,4 @@
-# draft-bosh-dots-quick-blocks
+# draft-ietf-dots-robust-blocks
 Distributed Denial-of-Service Open Threat Signaling (DOTS) Signal Channel Configuration Attributes for Faster Block Transmission
 
-# [Editor Copy vs. Public Copy](https://www.ietf.org/rfcdiff?url1=draft-bosh-dots-quick-blocks&url2=https://raw.githubusercontent.com/boucadair/draft-bosh-dots-quick-blocks/master/draft-bosh-dots-quick-blocks.txt)
+# [Editor Copy vs. Public Copy](https://www.ietf.org/rfcdiff?url1=draft-ietf-dots-robust-blocks&url2=https://raw.githubusercontent.com/boucadair/draft-ietf-dots-robust-blocks/master/draft-ietf-dots-robust-blocks.txt)
