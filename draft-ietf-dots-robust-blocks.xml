@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-bosh-dots-quick-blocks-latest"
+<rfc category="std" docName="draft-ietf-dots-robust-blocks-latest"
      ipr="trust200902">
   <front>
     <title abbrev="DOTS Robust Block Transmission">Distributed

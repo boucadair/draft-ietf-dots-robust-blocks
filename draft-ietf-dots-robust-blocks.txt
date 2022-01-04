@@ -10,7 +10,7 @@ Expires: 8 July 2022                                      4 January 2022
 
    Distributed Denial-of-Service Open Threat Signaling (DOTS) Signal
      Channel Configuration Attributes for Robust Block Transmission
-                  draft-bosh-dots-quick-blocks-latest
+                  draft-ietf-dots-robust-blocks-latest
 
 Abstract
 
