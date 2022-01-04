@@ -653,19 +653,19 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
            "Indicates the maximum number of times a request
             for the retransmission of missings payloads can
             occur without a response from the remote peer.";
-         leaf max-value {
-           type uint16;
+         choice direction {
            description
-             "Maximum acceptable non-max-retransmit value.";
-         }
-         leaf min-value {
-           type uint16;
-           description
-             "Minimum acceptable non-max-retransmit value.";
-         }
-         leaf current-value {
-           type uint16;
-           default "3";
+             "Indicates the communication direction in which the
+              data nodes can be included.";
+           case server-to-client-only {
+             description
+               "These data nodes appear only in a mitigation message
+                sent from the server to the client.";
+             leaf max-value {
+               type uint16;
+               description
+                 "Maximum acceptable non-max-retransmit value.";
+             }
 
 
 
@@ -674,6 +674,16 @@ Boucadair & Shallow        Expires 8 July 2022                 [Page 12]
 Internet-Draft       DOTS Robust Block Transmission         January 2022
 
 
+             leaf min-value {
+               type uint16;
+               description
+                 "Minimum acceptable non-max-retransmit value.";
+             }
+           }
+         }
+         leaf current-value {
+           type uint16;
+           default "3";
            description
              "Current non-max-retransmit value.";
            reference
@@ -712,6 +722,14 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
                description
                  "Minimum ack-timeout value.";
              }
+
+
+
+Boucadair & Shallow        Expires 8 July 2022                 [Page 13]
+
+Internet-Draft       DOTS Robust Block Transmission         January 2022
+
+
            }
          }
          leaf current-value-decimal {
@@ -722,14 +740,6 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
            default "2";
            description
              "Current ack-timeout value.";
-
-
-
-Boucadair & Shallow        Expires 8 July 2022                 [Page 13]
-
-Internet-Draft       DOTS Robust Block Transmission         January 2022
-
-
            reference
              "RFC NNNN: Constrained Application Protocol (CoAP)
                         Block-Wise Transfer Options Supporting
@@ -768,6 +778,14 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
          }
          leaf current-value-decimal {
            type decimal64 {
+
+
+
+Boucadair & Shallow        Expires 8 July 2022                 [Page 14]
+
+Internet-Draft       DOTS Robust Block Transmission         January 2022
+
+
              fraction-digits 2;
            }
            units "seconds";
@@ -778,14 +796,6 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
              "RFC NNNN: Constrained Application Protocol (CoAP)
                         Block-Wise Transfer Options Supporting
                         Robust Transmission, Section 7.2";
-
-
-
-Boucadair & Shallow        Expires 8 July 2022                 [Page 14]
-
-Internet-Draft       DOTS Robust Block Transmission         January 2022
-
-
          }
        }
        container non-partial-wait {
@@ -824,6 +834,14 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
            units "seconds";
            default "247";
            description
+
+
+
+Boucadair & Shallow        Expires 8 July 2022                 [Page 15]
+
+Internet-Draft       DOTS Robust Block Transmission         January 2022
+
+
              "Current non-partial-wait value.";
            reference
              "RFC NNNN: Constrained Application Protocol (CoAP)
@@ -834,14 +852,6 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
      }
 
      sx:augment-structure "/dots-signal:dots-signal"
-
-
-
-Boucadair & Shallow        Expires 8 July 2022                 [Page 15]
-
-Internet-Draft       DOTS Robust Block Transmission         January 2022
-
-
                         + "/dots-signal:message-type"
                         + "/dots-signal:signal-config"
                         + "/dots-signal:mitigating-config" {
@@ -872,16 +882,6 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
    *  Note to the RFC Editor: Please replace TBA1-TBA5 with the CBOR
       keys that are assigned from the 32768-49151 range.  Please update
       Table 2 accordingly.
-
-
-
-
-
-
-
-
-
-
 
 
 

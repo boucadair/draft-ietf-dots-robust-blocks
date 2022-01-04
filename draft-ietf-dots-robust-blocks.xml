@@ -586,15 +586,25 @@ module ietf-dots-robust-trans {
         "Indicates the maximum number of times a request 
          for the retransmission of missings payloads can
          occur without a response from the remote peer.";
-      leaf max-value {
-        type uint16;
+      choice direction {
         description
-          "Maximum acceptable non-max-retransmit value.";
-      }
-      leaf min-value {
-        type uint16;
-        description
-          "Minimum acceptable non-max-retransmit value.";
+          "Indicates the communication direction in which the
+           data nodes can be included.";
+        case server-to-client-only {
+          description
+            "These data nodes appear only in a mitigation message
+             sent from the server to the client.";
+          leaf max-value {
+            type uint16;
+            description
+              "Maximum acceptable non-max-retransmit value.";
+          }
+          leaf min-value {
+            type uint16;
+            description
+              "Minimum acceptable non-max-retransmit value.";
+          }
+        }
       }
       leaf current-value {
         type uint16;
