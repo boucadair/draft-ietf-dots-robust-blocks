@@ -623,8 +623,8 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
               data nodes can be included.";
            case server-to-client-only {
              description
-               "These data nodes appear only in a mitigation message
-                sent from the server to the client.";
+               "These data nodes appear only in a message sent
+                from the server to the client.";
              leaf max-value {
                type uint16;
                description
@@ -659,8 +659,8 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
               data nodes can be included.";
            case server-to-client-only {
              description
-               "These data nodes appear only in a mitigation message
-                sent from the server to the client.";
+               "These data nodes appear only in a message sent
+                from the server to the client.";
              leaf max-value {
                type uint16;
                description
@@ -704,8 +704,8 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
               data nodes can be included.";
            case server-to-client-only {
              description
-               "These data nodes appear only in a mitigation message
-                sent from the server to the client.";
+               "These data nodes appear only in a message sent
+                from the server to the client.";
              leaf max-value-decimal {
                type decimal64 {
                  fraction-digits 2;
@@ -756,8 +756,8 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
               data nodes can be included.";
            case server-to-client-only {
              description
-               "These data nodes appear only in a mitigation message
-                sent from the server to the client.";
+               "These data nodes appear only in a message sent
+                from the server to the client.";
              leaf max-value-decimal {
                type decimal64 {
                  fraction-digits 2;
@@ -807,8 +807,8 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
               data nodes can be included.";
            case server-to-client-only {
              description
-               "These data nodes appear only in a mitigation message
-                sent from the server to the client.";
+               "These data nodes appear only in a message sent
+                from the server to the client.";
              leaf max-value-decimal {
                type decimal64 {
                  fraction-digits 2;
