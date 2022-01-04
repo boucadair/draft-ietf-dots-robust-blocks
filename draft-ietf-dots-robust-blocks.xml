@@ -264,6 +264,12 @@ Table 1: Congestion Control Parameters]]></artwork>
           default value of this attribute is 'ack-timeout'.<vspace
           blankLines="1" />This is an optional attribute.</t>
 
+          <t hangText="non-receive-timeout:">This attribute echoes the
+          NON_RECEIVE_TIMEOUT parameter in <xref
+          target="I-D.ietf-core-new-block"></xref>. The default value of this
+          attribute is twice 'non-timeout'.<vspace blankLines="1" />This is an
+          optional attribute.</t>
+
           <t hangText="non-probing-wait:">This attribute echoes the
           NON_PROBING_WAIT parameter in <xref
           target="I-D.ietf-core-new-block"></xref>. The default value of this
@@ -281,8 +287,8 @@ Table 1: Congestion Control Parameters]]></artwork>
       in <xref target="put"></xref>. In this example, the 'max-payloads' is
       set to '15' when no mitigation is active, while it is set to '10' when a
       mitigation is active. The same value is used for 'non-max-retransmit',
-      'non-timeout', 'non-probing-wait', and "non-partial-wait" in both idle
-      and mitigation times.</t>
+      'non-timeout', 'non-receive-timeout', 'non-probing-wait', and
+      "non-partial-wait" in both idle and mitigation times.</t>
 
       <t><figure align="center" anchor="put"
           title="Example of PUT to Convey the Configuration Parameters">
@@ -323,6 +329,9 @@ Table 1: Congestion Control Parameters]]></artwork>
            "ietf-dots-robust-trans:non-timeout": {
              "current-value-decimal": "2.00"
            },
+           "ietf-dots-robust-trans:non-receive-timeout": {
+             "current-value-decimal": "4.00"
+           },
            "ietf-dots-robust-trans:non-probing-wait": {
              "current-value-decimal": "247.00"
            },
@@ -351,6 +360,9 @@ Table 1: Congestion Control Parameters]]></artwork>
            },
            "ietf-dots-robust-trans:non-timeout": {
              "current-value-decimal": "2.00"
+           },
+           "ietf-dots-robust-trans:non-receive-timeout": {
+             "current-value-decimal": "4.00"
            },
            "ietf-dots-robust-trans:non-probing-wait": {
              "current-value-decimal": "247.00"
@@ -393,6 +405,12 @@ Table 1: Congestion Control Parameters]]></artwork>
     |  |     +-- max-value-decimal?   decimal64
     |  |     +-- min-value-decimal?   decimal64
     |  +-- current-value-decimal?     decimal64
+    +-- non-receive-timeout
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value-decimal?   decimal64
+    |  |     +-- min-value-decimal?   decimal64
+    |  +-- current-value-decimal?     decimal64
     +-- non-probing-wait
     |  +-- (direction)?
     |  |  +--:(server-to-client-only)
@@ -421,6 +439,12 @@ Table 1: Congestion Control Parameters]]></artwork>
     |  |     +-- min-value?   uint16
     |  +-- current-value?     uint16
     +-- non-timeout
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value-decimal?   decimal64
+    |  |     +-- min-value-decimal?   decimal64
+    |  +-- current-value-decimal?     decimal64
+    +-- non-receive-timeout
     |  +-- (direction)?
     |  |  +--:(server-to-client-only)
     |  |     +-- max-value-decimal?   decimal64
@@ -467,9 +491,13 @@ Table 1: Congestion Control Parameters]]></artwork>
 | trans:non-timeout    |            |      |               |        |
 +----------------------+------------+------+---------------+--------+
 | ietf-dots-robust-    | container  | TBA4 | 5 map         | Object |
-|trans:non-probing-wait|            |      |               |        |
+|   trans:non-receive- |            |      |               |        |
+|   timeout            |            |      |               |        |
 +----------------------+------------+------+---------------+--------+
 | ietf-dots-robust-    | container  | TBA5 | 5 map         | Object |
+|trans:non-probing-wait|            |      |               |        |
++----------------------+------------+------+---------------+--------+
+| ietf-dots-robust-    | container  | TBA6 | 5 map         | Object |
 |trans:non-partial-wait|            |      |               |        |
 +----------------------+------------+------+---------------+--------+
 
@@ -621,8 +649,7 @@ module ietf-dots-robust-trans {
       description
         "Indicates the maximum period of delay between
          sending sets of MAX_PAYLOADS payloads for the same
-         body. By default, this parameter has the same value
-         as ACK_TIMEOUT.";
+         body.";
       choice direction {
         description
           "Indicates the communication direction in which the
@@ -657,6 +684,50 @@ module ietf-dots-robust-trans {
         default "2";
         description
           "Current ack-timeout value.";
+        reference
+          "RFC NNNN: Constrained Application Protocol (CoAP)  
+                     Block-Wise Transfer Options Supporting 
+                     Robust Transmission, Section 7.2";
+      }
+    }
+    container non-receive-timeout {
+      description
+        "Indicates the time to wait for a missing payload 
+         before requesting retransmission.";
+      choice direction {
+        description
+          "Indicates the communication direction in which the
+           data nodes can be included.";
+        case server-to-client-only {
+          description
+            "These data nodes appear only in a message sent
+             from the server to the client.";
+          leaf max-value-decimal {
+            type decimal64 {
+              fraction-digits 2;
+            }
+            units "seconds";
+            description
+              "Maximum non-receive-timeout value.";
+          }
+          leaf min-value-decimal {
+            type decimal64 {
+              fraction-digits 2;
+            }
+            units "seconds";
+            description
+              "Minimum non-receive-timeout value.";
+          }
+        }
+      }
+      leaf current-value-decimal {
+        type decimal64 {
+          fraction-digits 2;
+        }
+        units "seconds";
+        default "4";
+        description
+          "Current non-receive-timeout value.";
         reference
           "RFC NNNN: Constrained Application Protocol (CoAP)  
                      Block-Wise Transfer Options Supporting 
@@ -783,7 +854,7 @@ module ietf-dots-robust-trans {
         target="Key-Map"></xref>.</t>
 
         <t><list style="symbols">
-            <t>Note to the RFC Editor: Please replace TBA1-TBA5 with the CBOR
+            <t>Note to the RFC Editor: Please replace TBA1-TBA6 with the CBOR
             keys that are assigned from the 32768-49151 range. Please update
             Table 2 accordingly.</t>
           </list></t>
@@ -804,9 +875,12 @@ module ietf-dots-robust-trans {
 |  non-timeout           |       |       |            |               |
 +------------------------+-------+-------+------------+---------------+
 | ietf-dots-robust-trans:| TBA4  |   5   |    IESG    |   [RFCXXXX]   |
-|  non-probing-wait      |       |       |            |               |
+|  non-receive-timeout   |       |       |            |               |
 +------------------------+-------+-------+------------+---------------+
 | ietf-dots-robust-trans:| TBA5  |   5   |    IESG    |   [RFCXXXX]   |
+|  non-probing-wait      |       |       |            |               |
++------------------------+-------+-------+------------+---------------+
+| ietf-dots-robust-trans:| TBA6  |   5   |    IESG    |   [RFCXXXX]   |
 |  non-partial-wait      |       |       |            |               |
 +------------------------+-------+-------+------------+---------------+
 
