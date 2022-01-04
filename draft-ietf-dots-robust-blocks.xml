@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-dots-robust-blocks-latest"
+<rfc category="std" docName="draft-bosh-dots-quick-blocks-latest"
      ipr="trust200902">
   <front>
     <title abbrev="DOTS Robust Block Transmission">Distributed
@@ -136,44 +136,43 @@
       Confirmable (CON) responses to handle potential packet loss and that
       support application-specific mechanisms to assess whether the remote
       peer is able to handle the messages sent by a CoAP endpoint (e.g., DOTS
-      heartbeats in Section 4.7 of <xref
-      target="I-D.ietf-dots-rfc8782-bis"></xref>).</t>
+      heartbeats in Section 4.7 of <xref target="RFC9132"></xref>).</t>
 
       <t><xref target="I-D.ietf-core-new-block"></xref> includes guards to
       prevent a CoAP agent from overloading the network by adopting an
       aggressive sending rate. These guards are followed in addition to the
       existing CoAP congestion control as specified in Section 4.7 of <xref
-      target="RFC7252"></xref>. Table 1 additional CoAP attributes that are
-      used for the guards.</t>
+      target="RFC7252"></xref>. Table 1 lists the additional CoAP attributes
+      that are used for the guards.</t>
 
       <t><figure align="center">
-          <artwork align="center"><![CDATA[+---------------------+---------------+
-| Parameter Name      | Default Value |
-+=====================+===============|
-| MAX_PAYLOADS        |            10 |
-| NON_MAX_RETRANSMIT  |             4 |
-| NON_TIMEOUT         |           2 s |
-| NON_RECEIVE_TIMEOUT |           4 s |
-| NON_PROBING_WAIT    |         247 s |
-| NON_PARTIAL_TIMEOUT |         247 s |
-+---------------------+---------------+
+          <artwork align="center"><![CDATA[+---------------------+-------------------+
+| Parameter Name      |     Default Value |
++=====================+===================+
+| MAX_PAYLOADS        |                10 |
+| NON_MAX_RETRANSMIT  |                 4 |
+| NON_TIMEOUT         |               2 s |
+| NON_RECEIVE_TIMEOUT |               4 s |
+| NON_PROBING_WAIT    | between 247-248 s |
+| NON_PARTIAL_TIMEOUT |             247 s |
++---------------------+-------------------+
 
 Table 1: Congestion Control Parameters]]></artwork>
         </figure></t>
 
       <t>PROBING_RATE and other transmission parameters are negotiated between
       DOTS peers as discussed in Section 4.5.2 of <xref
-      target="I-D.ietf-dots-rfc8782-bis"></xref>. Nevertheless, the attributes
-      listed in Table 1 are not supported. This document defines new DOTS
-      signal channel attributes that are meant to customize the configuration
-      of robust block transmission in a DOTS context.</t>
+      target="RFC9132"></xref>. Nevertheless, the attributes listed in Table 1
+      are not supported. This document defines new DOTS signal channel
+      attributes that are used to customize the configuration of robust block
+      transmission in a DOTS context.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
       <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
       "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
       "OPTIONAL" in this document are to be interpreted as described in BCP 14
-      <xref target="RFC2119"></xref> <xref target="RFC8174"></xref> when, and
+      <xref target="RFC2119"></xref><xref target="RFC8174"></xref> when, and
       only when, they appear in all capitals, as shown here.</t>
 
       <t>Readers should be familiar with the terms and concepts defined in
@@ -195,7 +194,7 @@ Table 1: Congestion Control Parameters]]></artwork>
     </section>
 
     <section title="DOTS Attributes for Robust Block Transmission">
-      <t>Section 6.2 of <xref target="I-D.ietf-core-new-block"></xref> defines
+      <t>Section 7.2 of <xref target="I-D.ietf-core-new-block"></xref> defines
       the following attributes that are used for congestion control
       purposes:<list style="hanging">
           <t hangText="MAX_PAYLOADS:">is the maximum number of payloads that
@@ -237,10 +236,10 @@ Table 1: Congestion Control Parameters]]></artwork>
       limited to NON_PROBING_WAIT.</t>
 
       <t>This document augments the "ietf-dots-signal-channel" (dots-signal)
-      DOTS signal YANG module defined in <xref
-      target="I-D.ietf-dots-rfc8782-bis"></xref> with these additional
-      attributes that can be negotiated between DOTS peers to enable robust
-      and faster transmission:</t>
+      DOTS signal YANG module defined in Section 5.3 of <xref
+      target="RFC9132"></xref> with these additional attributes that can be
+      negotiated between DOTS peers to enable robust and faster
+      transmission:</t>
 
       <t><list style="hanging">
           <t hangText="max-payloads:">This attribute echoes the MAX_PAYLOADS
@@ -257,9 +256,8 @@ Table 1: Congestion Control Parameters]]></artwork>
           target="I-D.ietf-core-new-block"></xref>. The default value of this
           attribute is 'max-retransmit'. Note that DOTS uses a default value
           of '3' instead of '4' used for the generic CoAP use (Section 4.5.2
-          of <xref target="I-D.ietf-dots-rfc8782-bis"></xref>) for
-          max-transmit. <vspace blankLines="1" />This is an optional
-          attribute.</t>
+          of <xref target="RFC9132"></xref>) for max-transmit. <vspace
+          blankLines="1" />This is an optional attribute.</t>
 
           <t hangText="non-timeout:">This attribute echoes the NON_TIMEOUT
           parameter in <xref target="I-D.ietf-core-new-block"></xref>. The
@@ -279,11 +277,11 @@ Table 1: Congestion Control Parameters]]></artwork>
           attribute.</t>
         </list></t>
 
-      <t>An example of PUT message to convey the configuration parameters for
-      the DOTS signal channel is depicted in <xref target="put"></xref>. In
-      this example, the 'max-payloads' is set to '15' when no mitigation is
-      active, while it is set to '10' when a mitigation is active. The same
-      value is used for both 'non-max-retransmit' and 'non-timeout' in idle
+      <t>An example of PUT message to configure Q-Block parameters is depicted
+      in <xref target="put"></xref>. In this example, the 'max-payloads' is
+      set to '15' when no mitigation is active, while it is set to '10' when a
+      mitigation is active. The same value is used for 'non-max-retransmit',
+      'non-timeout', 'non-probing-wait', and "non-partial-wait" in both idle
       and mitigation times.</t>
 
       <t><figure align="center" anchor="put"
@@ -366,11 +364,12 @@ Table 1: Congestion Control Parameters]]></artwork>
         </figure></t>
     </section>
 
-    <section anchor="YANG" title="DOTS Robust Block Transmission YANG Module ">
+    <section anchor="YANG" title="DOTS Robust Block Transmission YANG Module">
       <section title="Tree Structure">
         <t>This document defines the YANG module "ietf-dots-robust-trans"
-        (<xref target="YANG"></xref>), which has the following tree
-        structure:<figure>
+        (<xref target="YANG"></xref>), which has the tree structure shown in
+        <xref target="tree"></xref>.<figure anchor="tree"
+            title="DOTS Fast Block Transmission Tree Structure">
             <artwork><![CDATA[module: ietf-dots-robust-trans
 
   augment-structure /dots-signal:dots-signal/dots-signal:message-type
@@ -482,11 +481,11 @@ Table 1: Congestion Control Parameters]]></artwork>
       </section>
 
       <section title="YANG Module ">
-        <t>This module uses the data structure extension defined in <xref
-        target="RFC8791"></xref>.</t>
+        <t>The "ietf-dots-robust-trans" module uses the data structure
+        extension defined in <xref target="RFC8791"></xref>.</t>
 
         <t><figure>
-            <artwork><![CDATA[<CODE BEGINS> file "ietf-dots-robust-trans@2020-05-04.yang"
+            <artwork><![CDATA[<CODE BEGINS> file "ietf-dots-robust-trans@2022-01-04.yang"
 module ietf-dots-robust-trans {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-dots-robust-trans";
@@ -495,7 +494,7 @@ module ietf-dots-robust-trans {
   import ietf-dots-signal-channel {
     prefix dots-signal;
     reference
-      "RFC YYYY: Distributed Denial-of-Service Open Threat
+      "RFC 9132: Distributed Denial-of-Service Open Threat
                  Signaling (DOTS) Signal Channel Specification";
   }
   import ietf-yang-structure-ext {
@@ -520,7 +519,7 @@ module ietf-dots-robust-trans {
      of parameters that can be negotiated between a DOTS client
      and a DOTS server for robust block transmission.
 
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2022 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -533,7 +532,7 @@ module ietf-dots-robust-trans {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2021-05-04 {
+  revision 2022-01-04 {
     description
       "Initial revision.";
     reference
@@ -576,22 +575,24 @@ module ietf-dots-robust-trans {
         default "10";
         description
           "Current max-payloads value.";
+        reference
+          "RFC NNNN: Constrained Application Protocol (CoAP)  
+                     Block-Wise Transfer Options Supporting 
+                     Robust Transmission, Section 7.2";
       }
     }
     container non-max-retransmit {
       description
-        "Indicates the the maximum number of times a
-         request for the retransmission of missings payloads
-         can occur without a response from the remote peer.";
+        "Indicates the maximum number of times a request 
+         for the retransmission of missings payloads can
+         occur without a response from the remote peer.";
       leaf max-value {
         type uint16;
-        config false;
         description
           "Maximum acceptable non-max-retransmit value.";
       }
       leaf min-value {
         type uint16;
-        config false;
         description
           "Minimum acceptable non-max-retransmit value.";
       }
@@ -600,6 +601,10 @@ module ietf-dots-robust-trans {
         default "3";
         description
           "Current non-max-retransmit value.";
+        reference
+          "RFC NNNN: Constrained Application Protocol (CoAP)  
+                     Block-Wise Transfer Options Supporting 
+                     Robust Transmission, Section 7.2";
       }
     }
     container non-timeout {
@@ -642,6 +647,10 @@ module ietf-dots-robust-trans {
         default "2";
         description
           "Current ack-timeout value.";
+        reference
+          "RFC NNNN: Constrained Application Protocol (CoAP)  
+                     Block-Wise Transfer Options Supporting 
+                     Robust Transmission, Section 7.2";
       }
     }
     container non-probing-wait {
@@ -682,6 +691,10 @@ module ietf-dots-robust-trans {
         default "247";
         description
           "Current non-probing-wait value.";
+        reference
+          "RFC NNNN: Constrained Application Protocol (CoAP)  
+                     Block-Wise Transfer Options Supporting 
+                     Robust Transmission, Section 7.2";
       }
     }
     container non-partial-wait {
@@ -721,6 +734,10 @@ module ietf-dots-robust-trans {
         default "247";
         description
           "Current non-partial-wait value.";
+        reference
+          "RFC NNNN: Constrained Application Protocol (CoAP)  
+                     Block-Wise Transfer Options Supporting 
+                     Robust Transmission, Section 7.2";
       }
     }
   }
@@ -756,8 +773,8 @@ module ietf-dots-robust-trans {
         target="Key-Map"></xref>.</t>
 
         <t><list style="symbols">
-            <t>Note to the RFC Editor: Please replace TBA1/TBA2/TBA3 with the
-            CBOR keys that are assigned from the 128-255 range. Please update
+            <t>Note to the RFC Editor: Please replace TBA1-TBA5 with the CBOR
+            keys that are assigned from the 32768-49151 range. Please update
             Table 2 accordingly.</t>
           </list></t>
 
@@ -797,7 +814,6 @@ module ietf-dots-robust-trans {
             <artwork><![CDATA[  URI: urn:ietf:params:xml:ns:yang:ietf-dots-robust-trans
   Registrant Contact: The IESG.
   XML: N/A; the requested URI is an XML namespace.
-
 ]]></artwork>
           </figure></t>
 
@@ -818,8 +834,7 @@ module ietf-dots-robust-trans {
 
     <section anchor="security" title="Security Considerations">
       <t>The security considerations for the DOTS signal channel protocol are
-      discussed in Section 11 of <xref
-      target="I-D.ietf-dots-rfc8782-bis"></xref>.</t>
+      discussed in Section 11 of <xref target="RFC9132"></xref>.</t>
 
       <t>CoAP-specific security considerations are discussed in Section 11 of
       <xref target="I-D.ietf-core-new-block"></xref>.</t>
@@ -855,7 +870,7 @@ module ietf-dots-robust-trans {
 
       <?rfc include='reference.I-D.ietf-core-new-block'?>
 
-      <?rfc include='reference.I-D.ietf-dots-rfc8782-bis'?>
+      <?rfc include='reference.RFC.9132'?>
 
       <?rfc include='reference.RFC.6020'?>
 
