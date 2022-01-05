@@ -88,8 +88,8 @@
     <abstract>
       <t>This document specifies new DOTS signal channel configuration
       parameters that are negotiated between DOTS peers to enable the use of
-      Q-Block1 and Q-Block2 Options. These options enable robust and faster
-      transmission rates for large amounts of data with less packet
+      Q-Block1 and Q-Block2 CoAP Options. These options enable robust and
+      faster transmission rates for large amounts of data with less packet
       interchanges as well as supporting faster recovery should any of the
       blocks get lost in transmission.</t>
     </abstract>
@@ -233,22 +233,16 @@ Table 1: Congestion Control Parameters]]></artwork>
       using on PROBING_RATE exceeds NON_PROBING_WAIT, then the gap time is
       limited to NON_PROBING_WAIT.</t>
 
-      <t>This document augments the "ietf-dots-signal-channel" (dots-signal)
-      DOTS signal YANG module defined in Section 5.3 of <xref
-      target="RFC9132"></xref> with these additional attributes that can be
-      negotiated between DOTS peers to enable robust and faster
-      transmission:</t>
+      <t>This document augments the "ietf-dots-signal-channel" DOTS signal
+      YANG module defined in Section 5.3 of <xref target="RFC9132"></xref>
+      with the following additional attributes that can be negotiated between
+      DOTS peers to enable robust and faster transmission:</t>
 
       <t><list style="hanging">
           <t hangText="max-payloads:">This attribute echoes the MAX_PAYLOADS
           parameter in <xref target="I-D.ietf-core-new-block"></xref>.<vspace
           blankLines="1" />This is an optional attribute.</t>
-        </list></t>
 
-      <t>For the sake of more flexible configuration, this document defines
-      also the following attributes:</t>
-
-      <t><list style="hanging">
           <t hangText="non-max-retransmit:">This attribute echoes the
           NON_MAX_RETRANSMIT parameter in <xref
           target="I-D.ietf-core-new-block"></xref>. The default value of this
@@ -281,13 +275,104 @@ Table 1: Congestion Control Parameters]]></artwork>
           attribute.</t>
         </list></t>
 
+      <t>The tree structure of the "ietf-dots-robust-trans" module (<xref
+      target="YANG"></xref>) is shown in <xref target="tree"></xref>.</t>
+
+      <t><figure anchor="tree"
+          title="DOTS Fast Block Transmission Tree Structure">
+          <artwork><![CDATA[module: ietf-dots-robust-trans
+
+  augment-structure /dots-signal:dots-signal/dots-signal:message-type
+                    /dots-signal:signal-config
+                    /dots-signal:mitigating-config:
+    +-- max-payloads
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value?   uint16
+    |  |     +-- min-value?   uint16
+    |  +-- current-value?     uint16
+    +-- non-max-retransmit
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value?   uint16
+    |  |     +-- min-value?   uint16
+    |  +-- current-value?     uint16
+    +-- non-timeout
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value-decimal?   decimal64
+    |  |     +-- min-value-decimal?   decimal64
+    |  +-- current-value-decimal?     decimal64
+    +-- non-receive-timeout
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value-decimal?   decimal64
+    |  |     +-- min-value-decimal?   decimal64
+    |  +-- current-value-decimal?     decimal64
+    +-- non-probing-wait
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value-decimal?   decimal64
+    |  |     +-- min-value-decimal?   decimal64
+    |  +-- current-value-decimal?     decimal64
+    +-- non-partial-wait:
+       +-- (direction)?
+       |  +--:(server-to-client-only)
+       |     +-- max-value-decimal?   decimal64
+       |     +-- min-value-decimal?   decimal64
+       +-- current-value-decimal?     decimal64
+
+  augment-structure /dots-signal:dots-signal/dots-signal:message-type
+                    /dots-signal:signal-config/dots-signal:idle-config:
+    +-- max-payloads
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value?   uint16
+    |  |     +-- min-value?   uint16
+    |  +-- current-value?     uint16
+    +-- non-max-retransmit
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value?   uint16
+    |  |     +-- min-value?   uint16
+    |  +-- current-value?     uint16
+    +-- non-timeout
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value-decimal?   decimal64
+    |  |     +-- min-value-decimal?   decimal64
+    |  +-- current-value-decimal?     decimal64
+    +-- non-receive-timeout
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value-decimal?   decimal64
+    |  |     +-- min-value-decimal?   decimal64
+    |  +-- current-value-decimal?     decimal64
+    +-- non-probing-wait
+    |  +-- (direction)?
+    |  |  +--:(server-to-client-only)
+    |  |     +-- max-value-decimal?   decimal64
+    |  |     +-- min-value-decimal?   decimal64
+    |  +-- current-value-decimal?     decimal64
+    +-- non-partial-wait:
+       +-- (direction)?
+       |  +--:(server-to-client-only)
+       |     +-- max-value-decimal?   decimal64
+       |     +-- min-value-decimal?   decimal64
+       +-- current-value-decimal?     decimal64
+]]></artwork>
+        </figure></t>
+
+      <t>These attributes are mapped to CBOR types as specified in <xref
+      target="maptab"></xref>.</t>
+
       <t>DOTS clients follow the procedure specified in Section 4.5 of <xref
       target="RFC9132"></xref> to negotiate, configure, and retrieve the DOTS
       signal channel session behavior (including Q-Block parameters) with DOTS
       peers. As specified in Section 7.2 of <xref
       target="I-D.ietf-core-new-block"></xref>, negotiated 'non-probing-wait'
-      and 'non-partial-timeout' values are used without applying any
-      jitter.</t>
+      and 'non-partial-timeout' values are used without applying any jitter.
+      </t>
 
       <t>An example of PUT message to configure Q-Block parameters is depicted
       in <xref target="put"></xref>. In this example, the 'max-payloads'
@@ -381,99 +466,13 @@ Table 1: Congestion Control Parameters]]></artwork>
        }
      }]]></artwork>
         </figure></t>
+
+      <t>The example uses JSON encoding of YANG-modeled data following the
+      mapping table in <xref target="maptab"></xref>.</t>
     </section>
 
     <section anchor="YANG" title="DOTS Robust Block Transmission YANG Module">
-      <section title="Tree Structure">
-        <t>This document defines the YANG module "ietf-dots-robust-trans"
-        (<xref target="YANG"></xref>), which has the tree structure shown in
-        <xref target="tree"></xref>.<figure anchor="tree"
-            title="DOTS Fast Block Transmission Tree Structure">
-            <artwork><![CDATA[module: ietf-dots-robust-trans
-
-  augment-structure /dots-signal:dots-signal/dots-signal:message-type
-                    /dots-signal:signal-config
-                    /dots-signal:mitigating-config:
-    +-- max-payloads
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value?   uint16
-    |  |     +-- min-value?   uint16
-    |  +-- current-value?     uint16
-    +-- non-max-retransmit
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value?   uint16
-    |  |     +-- min-value?   uint16
-    |  +-- current-value?     uint16
-    +-- non-timeout
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value-decimal?   decimal64
-    |  |     +-- min-value-decimal?   decimal64
-    |  +-- current-value-decimal?     decimal64
-    +-- non-receive-timeout
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value-decimal?   decimal64
-    |  |     +-- min-value-decimal?   decimal64
-    |  +-- current-value-decimal?     decimal64
-    +-- non-probing-wait
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value-decimal?   decimal64
-    |  |     +-- min-value-decimal?   decimal64
-    |  +-- current-value-decimal?     decimal64
-    +-- non-partial-wait:
-       +-- (direction)?
-       |  +--:(server-to-client-only)
-       |     +-- max-value-decimal?   decimal64
-       |     +-- min-value-decimal?   decimal64
-       +-- current-value-decimal?     decimal64
-
-  augment-structure /dots-signal:dots-signal/dots-signal:message-type
-                    /dots-signal:signal-config/dots-signal:idle-config:
-    +-- max-payloads
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value?   uint16
-    |  |     +-- min-value?   uint16
-    |  +-- current-value?     uint16
-    +-- non-max-retransmit
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value?   uint16
-    |  |     +-- min-value?   uint16
-    |  +-- current-value?     uint16
-    +-- non-timeout
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value-decimal?   decimal64
-    |  |     +-- min-value-decimal?   decimal64
-    |  +-- current-value-decimal?     decimal64
-    +-- non-receive-timeout
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value-decimal?   decimal64
-    |  |     +-- min-value-decimal?   decimal64
-    |  +-- current-value-decimal?     decimal64
-    +-- non-probing-wait
-    |  +-- (direction)?
-    |  |  +--:(server-to-client-only)
-    |  |     +-- max-value-decimal?   decimal64
-    |  |     +-- min-value-decimal?   decimal64
-    |  +-- current-value-decimal?     decimal64
-    +-- non-partial-wait:
-       +-- (direction)?
-       |  +--:(server-to-client-only)
-       |     +-- max-value-decimal?   decimal64
-       |     +-- min-value-decimal?   decimal64
-       +-- current-value-decimal?     decimal64
-]]></artwork>
-          </figure></t>
-      </section>
-
-      <section title="YANG/JSON Mapping Parameters to CBOR">
+      <section anchor="maptab" title="YANG/JSON Mapping Parameters to CBOR">
         <t>The YANG/JSON mapping parameters to CBOR are listed in Table
         2.<list style="symbols">
             <t>Note: Implementers must check that the mapping output provided
@@ -518,8 +517,10 @@ Table 1: Congestion Control Parameters]]></artwork>
       </section>
 
       <section anchor="module" title="YANG Module ">
-        <t>The "ietf-dots-robust-trans" module uses the data structure
-        extension defined in <xref target="RFC8791"></xref>.</t>
+        <t>The "ietf-dots-robust-trans" module is not intended to be used via
+        NETCONF/RESTCONF; it serves only to provide abstract data structures.
+        This module uses the data structure extension defined in <xref
+        target="RFC8791"></xref>.</t>
 
         <t><figure>
             <artwork><![CDATA[<CODE BEGINS> file "ietf-dots-robust-trans@2022-01-04.yang"
