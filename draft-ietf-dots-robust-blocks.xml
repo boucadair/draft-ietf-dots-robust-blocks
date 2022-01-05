@@ -189,11 +189,6 @@ Table 1: Congestion Control Parameters]]></artwork>
 
       <t>The meaning of the symbols in YANG tree diagrams are defined in <xref
       target="RFC8340"></xref> and <xref target="RFC8791"></xref>.</t>
-
-      <t>(D)TLS is used for statements that apply to both Transport Layer
-      Security (TLS) <xref target="RFC8446"></xref> and Datagram Transport
-      Layer Security (DTLS) <xref target="RFC6347"></xref>. Specific terms are
-      used for any statement that applies to either protocol alone.</t>
     </section>
 
     <section title="DOTS Attributes for Robust Block Transmission">
@@ -522,7 +517,7 @@ Table 1: Congestion Control Parameters]]></artwork>
         <t></t>
       </section>
 
-      <section title="YANG Module ">
+      <section anchor="module" title="YANG Module ">
         <t>The "ietf-dots-robust-trans" module uses the data structure
         extension defined in <xref target="RFC8791"></xref>.</t>
 
@@ -939,8 +934,8 @@ module ietf-dots-robust-trans {
 
       <t>This document defines YANG data structures that are meant to be used
       as an abstract representation in DOTS signal channel messages. As such,
-      the "ietf-dots-robust-trans" module does not introduce any new
-      vulnerabilities beyond those specified above.</t>
+      the "ietf-dots-robust-trans" module (<xref target="module"></xref>) does
+      not introduce any new vulnerabilities beyond those specified above.</t>
     </section>
 
     <section anchor="ack" title="Acknowledgements">
@@ -961,10 +956,6 @@ module ietf-dots-robust-trans {
       <?rfc include='reference.RFC.8323'?>
 
       <?rfc include='reference.RFC.8791'?>
-
-      <?rfc include="reference.RFC.8446"?>
-
-      <?rfc include='reference.RFC.6347'?>
 
       <?rfc include='reference.I-D.ietf-core-new-block'?>
 
