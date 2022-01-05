@@ -382,8 +382,8 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
 
          Figure 1: DOTS Fast Block Transmission Tree Structure
 
-   These attributes are mapped to CBOR types as specified in Section 4.
-
+   These attributes are mapped to CBOR types as specified in Section 4
+   and Section 6 of [RFC9132].
 
 
 
@@ -406,7 +406,8 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
    '15' when no mitigation is active, while it is set to '10' when a
    mitigation is active.  The same value is used for 'non-max-
    retransmit', 'non-timeout', 'non-receive-timeout', 'non-probing-
-   wait', and "non-partial-wait" in both idle and mitigation times.
+   wait', and "non-partial-wait" in both idle and mitigation times.  The
+   meaning of other attributes is detailed in Section 4.5 of [RFC9132].
 
         Header: PUT (Code=0.03)
         Uri-Path: ".well-known"
@@ -441,7 +442,6 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
               },
               "ietf-dots-robust-trans:non-max-retransmit": {
                 "current-value": 3
-              },
 
 
 
@@ -450,6 +450,7 @@ Boucadair & Shallow        Expires 9 July 2022                  [Page 8]
 Internet-Draft       DOTS Robust Block Transmission         January 2022
 
 
+              },
               "ietf-dots-robust-trans:non-timeout": {
                 "current-value-decimal": "2.00"
               },
@@ -500,7 +501,6 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
 
 
 
-
 Boucadair & Shallow        Expires 9 July 2022                  [Page 9]
 
 Internet-Draft       DOTS Robust Block Transmission         January 2022
@@ -509,7 +509,7 @@ Internet-Draft       DOTS Robust Block Transmission         January 2022
       Figure 2: Example of PUT to Convey the Configuration Parameters
 
    The example uses JSON encoding of YANG-modeled data following the
-   mapping table in Section 4.
+   mapping table in Section 4 and Section 6 of [RFC9132].
 
 4.  YANG/JSON Mapping Parameters to CBOR
 

@@ -364,7 +364,8 @@ Table 1: Congestion Control Parameters]]></artwork>
         </figure></t>
 
       <t>These attributes are mapped to CBOR types as specified in <xref
-      target="maptab"></xref>.</t>
+      target="maptab"></xref> and Section 6 of <xref
+      target="RFC9132"></xref>.</t>
 
       <t>DOTS clients follow the procedure specified in Section 4.5 of <xref
       target="RFC9132"></xref> to negotiate, configure, and retrieve the DOTS
@@ -380,7 +381,8 @@ Table 1: Congestion Control Parameters]]></artwork>
       to '10' when a mitigation is active. The same value is used for
       'non-max-retransmit', 'non-timeout', 'non-receive-timeout',
       'non-probing-wait', and "non-partial-wait" in both idle and mitigation
-      times.</t>
+      times. The meaning of other attributes is detailed in Section 4.5 of
+      <xref target="RFC9132"></xref>.</t>
 
       <t><figure align="center" anchor="put"
           title="Example of PUT to Convey the Configuration Parameters">
@@ -468,7 +470,8 @@ Table 1: Congestion Control Parameters]]></artwork>
         </figure></t>
 
       <t>The example uses JSON encoding of YANG-modeled data following the
-      mapping table in <xref target="maptab"></xref>.</t>
+      mapping table in <xref target="maptab"></xref> and Section 6 of <xref
+      target="RFC9132"></xref>.</t>
     </section>
 
     <section anchor="maptab" title="YANG/JSON Mapping Parameters to CBOR">
