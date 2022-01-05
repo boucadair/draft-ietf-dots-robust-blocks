@@ -276,7 +276,7 @@ Table 1: Congestion Control Parameters]]></artwork>
         </list></t>
 
       <t>The tree structure of the "ietf-dots-robust-trans" module (<xref
-      target="YANG"></xref>) is shown in <xref target="tree"></xref>.</t>
+      target="module"></xref>) is shown in <xref target="tree"></xref>.</t>
 
       <t><figure anchor="tree"
           title="DOTS Fast Block Transmission Tree Structure">
@@ -471,17 +471,16 @@ Table 1: Congestion Control Parameters]]></artwork>
       mapping table in <xref target="maptab"></xref>.</t>
     </section>
 
-    <section anchor="YANG" title="DOTS Robust Block Transmission YANG Module">
-      <section anchor="maptab" title="YANG/JSON Mapping Parameters to CBOR">
-        <t>The YANG/JSON mapping parameters to CBOR are listed in Table
-        2.<list style="symbols">
-            <t>Note: Implementers must check that the mapping output provided
-            by their YANG-to-CBOR encoding schemes is aligned with the content
-            of Table 2.</t>
-          </list></t>
+    <section anchor="maptab" title="YANG/JSON Mapping Parameters to CBOR">
+      <t>The YANG/JSON mapping parameters to CBOR are listed in Table 2.<list
+          style="symbols">
+          <t>Note: Implementers must check that the mapping output provided by
+          their YANG-to-CBOR encoding schemes is aligned with the content of
+          Table 2.</t>
+        </list></t>
 
-        <t><figure align="center">
-            <artwork><![CDATA[+----------------------+------------+------+---------------+--------+
+      <t><figure align="center">
+          <artwork><![CDATA[+----------------------+------------+------+---------------+--------+
 |   Parameter Name     | YANG       | CBOR | CBOR Major    | JSON   |
 |                      | Type       | Key  |    Type &     | Type   |
 |                      |            |      | Information   |        |
@@ -511,19 +510,20 @@ Table 1: Congestion Control Parameters]]></artwork>
 
            Table 2: YANG/JSON Mapping Parameters to CBOR
 ]]></artwork>
-          </figure></t>
+        </figure></t>
 
-        <t></t>
-      </section>
+      <t></t>
+    </section>
 
-      <section anchor="module" title="YANG Module ">
-        <t>The "ietf-dots-robust-trans" module is not intended to be used via
-        NETCONF/RESTCONF; it serves only to provide abstract data structures.
-        This module uses the data structure extension defined in <xref
-        target="RFC8791"></xref>.</t>
+    <section anchor="module"
+             title="DOTS Robust Block Transmission YANG Module">
+      <t>The "ietf-dots-robust-trans" module is not intended to be used via
+      NETCONF/RESTCONF; it serves only to provide abstract data structures.
+      This module uses the data structure extension defined in <xref
+      target="RFC8791"></xref>.</t>
 
-        <t><figure>
-            <artwork><![CDATA[<CODE BEGINS> file "ietf-dots-robust-trans@2022-01-04.yang"
+      <t><figure>
+          <artwork><![CDATA[<CODE BEGINS> file "ietf-dots-robust-trans@2022-01-04.yang"
 module ietf-dots-robust-trans {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-dots-robust-trans";
@@ -853,8 +853,7 @@ module ietf-dots-robust-trans {
   }
 }
 <CODE ENDS>]]></artwork>
-          </figure></t>
-      </section>
+        </figure></t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
