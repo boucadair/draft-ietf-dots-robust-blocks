@@ -1,11 +1,27 @@
-   +----------------------+------------+------+---------------+--------+
-   |   Parameter Name     | YANG       | CBOR | CBOR Major    | JSON   |
-   |                      | Type       | Key  |    Type &     | Type   |
-   |                      |            |      | Information   |        |
-   +======================+============+======+===============+========+
-   | ietf-dots-fast-trans:| container  |32780 | 5 map         | Object |
-   |  max-payloads        |            |      |               |        |
-   +----------------------+------------+------+---------------+--------+
-   | ietf-dots-fast-trans:| container  |32781 | 5 map         | Object |
-   |   non-timeout        |            |      |               |        |
-   +----------------------+------------+------+---------------+--------+
++----------------------+------------+------+---------------+--------+
+|   Parameter Name     | YANG       | CBOR | CBOR Major    | JSON   |
+|                      | Type       | Key  |    Type &     | Type   |
+|                      |            |      | Information   |        |
++======================+============+======+===============+========+
+| ietf-dots-robust-    | container  |32780 | 5 map         | Object |
+|   trans:max-payloads |            |      |               |        |
++----------------------+------------+------+---------------+--------+
+| ietf-dots-robust-    | container  |32781 | 5 map         | Object |
+|   trans:non-max-     |            |      |               |        |
+|   retransmit         |            |      |               |        |
++----------------------+------------+------+---------------+--------+
+| ietf-dots-robust-    | container  |32782 | 5 map         | Object |
+|   trans:non-timeout  |            |      |               |        |
++----------------------+------------+------+---------------+--------+
+| ietf-dots-robust-    | container  |32783 | 5 map         | Object |
+|   trans:non-receive- |            |      |               |        |
+|   timeout            |            |      |               |        |
++----------------------+------------+------+---------------+--------+
+| ietf-dots-robust-    | container  |32784 | 5 map         | Object |
+|   trans:non-probing- |            |      |               |        |
+|   wait               |            |      |               |        |
++----------------------+------------+------+---------------+--------+
+| ietf-dots-robust-    | container  |32785 | 5 map         | Object |
+|   trans:non-partial- |            |      |               |        |
+|   wait               |            |      |               |        |
++----------------------+------------+------+---------------+--------+
