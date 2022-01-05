@@ -100,10 +100,11 @@
       <t>The Constrained Application Protocol (CoAP) <xref
       target="RFC7252"></xref>, although inspired by HTTP, was designed to use
       UDP instead of TCP. The message layer of CoAP over UDP includes support
-      for reliable delivery, simple congestion control, and flow control.
-      <xref target="RFC7959"></xref> introduced the CoAP Block1 and Block2
-      Options to handle data records that cannot fit in a single IP packet, so
-      not having to rely on IP fragmentation and was further updated by <xref
+      for reliable delivery, simple congestion control, and flow control. The
+      block-wise transfer <xref target="RFC7959"></xref> introduced the CoAP
+      Block1 and Block2 Options to handle data records that cannot fit in a
+      single IP packet, so not having to rely on IP fragmentation. The
+      block-wise transfer was further updated by <xref
       target="RFC8323"></xref> for use over TCP, TLS, and WebSockets.</t>
 
       <t>The CoAP Block1 and Block2 Options work well in environments where
@@ -122,28 +123,30 @@
       target="I-D.ietf-dots-telemetry"></xref>). As a reminder, <xref
       target="RFC7959"></xref> recommends the use of Confirmable (CON)
       responses to handle potential packet loss. However, such a
-      recommendation does not work with a flooded pipe DDoS situation as the
-      returning ACK packets may not get through.</t>
+      recommendation does not work with a flooded pipe DDoS situation because
+      the returning ACK packets may not get through.</t>
 
       <t>The block-wise transfer specified in <xref target="RFC7959"></xref>
       covers the general case, but falls short in situations where packet loss
       is highly asymmetrical. The mechanism specified in <xref
       target="I-D.ietf-core-new-block"></xref> provides roughly similar
-      features to the Block1/Block2 Options. It provides additional properties
-      that are tailored towards the intended DOTS transmission. Concretely,
-      <xref target="I-D.ietf-core-new-block"></xref> primarily targets
-      applications such as DDoS Open Threat Signaling (DOTS) that can't use
-      Confirmable (CON) responses to handle potential packet loss and that
-      support application-specific mechanisms to assess whether the remote
-      peer is able to handle the messages sent by a CoAP endpoint (e.g., DOTS
-      heartbeats in Section 4.7 of <xref target="RFC9132"></xref>).</t>
+      features to the Block1/Block2 Options, but provides additional
+      properties that are tailored towards the intended DOTS transmission.
+      Concretely, <xref target="I-D.ietf-core-new-block"></xref> primarily
+      targets applications such as DDoS Open Threat Signaling (DOTS) that
+      can't use Confirmable (CON) responses to handle potential packet loss
+      and that support application-specific mechanisms to assess whether the
+      remote peer is able to handle the messages sent by a CoAP endpoint
+      (e.g., DOTS heartbeats in Section 4.7 of <xref
+      target="RFC9132"></xref>).</t>
 
       <t><xref target="I-D.ietf-core-new-block"></xref> includes guards to
       prevent a CoAP agent from overloading the network by adopting an
       aggressive sending rate. These guards are followed in addition to the
       existing CoAP congestion control as specified in Section 4.7 of <xref
-      target="RFC7252"></xref>. Table 1 lists the additional CoAP attributes
-      that are used for the guards.</t>
+      target="RFC7252"></xref> (mainly, PROBING_RATE). Table 1 lists the
+      additional CoAP attributes that are used for the guards (Section 7.2 of
+      <xref target="I-D.ietf-core-new-block"></xref>).</t>
 
       <t><figure align="center">
           <artwork align="center"><![CDATA[+---------------------+-------------------+
@@ -283,12 +286,21 @@ Table 1: Congestion Control Parameters]]></artwork>
           attribute.</t>
         </list></t>
 
+      <t>DOTS clients follow the procedure specified in Section 4.5 of <xref
+      target="RFC9132"></xref> to negotiate, configure, and retrieve the DOTS
+      signal channel session behavior (including Q-Block parameters) with DOTS
+      peers. As specified in Section 7.2 of <xref
+      target="I-D.ietf-core-new-block"></xref>, negotiated 'non-probing-wait'
+      and 'non-partial-timeout' values are used without applying any
+      jitter.</t>
+
       <t>An example of PUT message to configure Q-Block parameters is depicted
-      in <xref target="put"></xref>. In this example, the 'max-payloads' is
-      set to '15' when no mitigation is active, while it is set to '10' when a
-      mitigation is active. The same value is used for 'non-max-retransmit',
-      'non-timeout', 'non-receive-timeout', 'non-probing-wait', and
-      "non-partial-wait" in both idle and mitigation times.</t>
+      in <xref target="put"></xref>. In this example, the 'max-payloads'
+      attribute is set to '15' when no mitigation is active, while it is set
+      to '10' when a mitigation is active. The same value is used for
+      'non-max-retransmit', 'non-timeout', 'non-receive-timeout',
+      'non-probing-wait', and "non-partial-wait" in both idle and mitigation
+      times.</t>
 
       <t><figure align="center" anchor="put"
           title="Example of PUT to Convey the Configuration Parameters">
@@ -481,24 +493,26 @@ Table 1: Congestion Control Parameters]]></artwork>
 |                      |            |      | Information   |        |
 +======================+============+======+===============+========+
 | ietf-dots-robust-    | container  | TBA1 | 5 map         | Object |
-|  trans:max-payloads  |            |      |               |        |
+|   trans:max-payloads |            |      |               |        |
 +----------------------+------------+------+---------------+--------+
 | ietf-dots-robust-    | container  | TBA2 | 5 map         | Object |
 |   trans:non-max-     |            |      |               |        |
 |   retransmit         |            |      |               |        |
 +----------------------+------------+------+---------------+--------+
 | ietf-dots-robust-    | container  | TBA3 | 5 map         | Object |
-| trans:non-timeout    |            |      |               |        |
+|   trans:non-timeout  |            |      |               |        |
 +----------------------+------------+------+---------------+--------+
 | ietf-dots-robust-    | container  | TBA4 | 5 map         | Object |
 |   trans:non-receive- |            |      |               |        |
 |   timeout            |            |      |               |        |
 +----------------------+------------+------+---------------+--------+
 | ietf-dots-robust-    | container  | TBA5 | 5 map         | Object |
-|trans:non-probing-wait|            |      |               |        |
+|   trans:non-probing- |            |      |               |        |
+|   wait               |            |      |               |        |
 +----------------------+------------+------+---------------+--------+
 | ietf-dots-robust-    | container  | TBA6 | 5 map         | Object |
-|trans:non-partial-wait|            |      |               |        |
+|   trans:non-partial- |            |      |               |        |
+|   wait               |            |      |               |        |
 +----------------------+------------+------+---------------+--------+
 
            Table 2: YANG/JSON Mapping Parameters to CBOR
@@ -681,7 +695,7 @@ module ietf-dots-robust-trans {
           fraction-digits 2;
         }
         units "seconds";
-        default "2";
+        default "2.00";
         description
           "Current ack-timeout value.";
         reference
@@ -725,7 +739,7 @@ module ietf-dots-robust-trans {
           fraction-digits 2;
         }
         units "seconds";
-        default "4";
+        default "4.00";
         description
           "Current non-receive-timeout value.";
         reference
@@ -769,7 +783,7 @@ module ietf-dots-robust-trans {
           fraction-digits 2;
         }
         units "seconds";
-        default "247";
+        default "247.00";
         description
           "Current non-probing-wait value.";
         reference
@@ -812,7 +826,7 @@ module ietf-dots-robust-trans {
           fraction-digits 2;
         }
         units "seconds";
-        default "247";
+        default "247.00";
         description
           "Current non-partial-wait value.";
         reference
