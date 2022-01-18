@@ -372,8 +372,8 @@ Table 1: Congestion Control Parameters]]></artwork>
       signal channel session behavior (including Q-Block parameters) with DOTS
       peers. As specified in Section 7.2 of <xref
       target="I-D.ietf-core-new-block"></xref>, negotiated 'non-probing-wait'
-      and 'non-partial-timeout' values are used without applying any jitter.
-      </t>
+      and 'non-partial-timeout' values are used without applying any
+      jitter.</t>
 
       <t>An example of PUT message to configure Q-Block parameters is depicted
       in <xref target="put"></xref>. In this example, the 'max-payloads'
@@ -942,7 +942,7 @@ module ietf-dots-robust-trans {
     </section>
 
     <section anchor="ack" title="Acknowledgements">
-      <t>TBC</t>
+      <t>Thanks to Michal Va&scaron;ko fro the yangdoctors review.</t>
     </section>
   </middle>
 
