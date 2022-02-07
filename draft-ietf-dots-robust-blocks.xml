@@ -214,8 +214,7 @@ Table 1: Congestion Control Parameters]]></artwork>
           NON_RECEIVE_TIMEOUT has a value of twice NON_TIMEOUT.</t>
 
           <t hangText="NON_PROBING_WAIT:">is used to limit the potential wait
-          needed calculated when using PROBING_WAIT (Section 4.8.2 of <xref
-          target="RFC7252"></xref>).</t>
+          needed calculated when using PROBING_WAIT.</t>
 
           <t hangText="NON_PARTIAL_TIMEOUT:">is used for expiring partially
           received bodies (Section 4.8.2 of <xref

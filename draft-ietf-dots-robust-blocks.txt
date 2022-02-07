@@ -212,7 +212,7 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
       NON_RECEIVE_TIMEOUT has a value of twice NON_TIMEOUT.
 
    NON_PROBING_WAIT:  is used to limit the potential wait needed
-      calculated when using PROBING_WAIT (Section 4.8.2 of [RFC7252]).
+      calculated when using PROBING_WAIT.
 
    NON_PARTIAL_TIMEOUT:  is used for expiring partially received bodies
       (Section 4.8.2 of [RFC7252]).
