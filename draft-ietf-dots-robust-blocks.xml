@@ -469,9 +469,17 @@ Table 1: Congestion Control Parameters]]></artwork>
      }]]></artwork>
         </figure></t>
 
-      <t>The example uses JSON encoding of YANG-modeled data following the
-      mapping table in <xref target="maptab"></xref> and Section 6 of <xref
-      target="RFC9132"></xref>.</t>
+      <t></t>
+
+      <t>The payload of the message depicted in <xref target="put"></xref> is
+      CBOR-encoded as indicated by the Content-Format set to
+      "application/dots+cbor" (Section 10.3 of <xref
+      target="RFC9132"></xref>). However, and for the sake of better
+      readability, the example uses JSON encoding of YANG-modeled data
+      following the mapping table in <xref target="maptab"></xref> and Section
+      6 of <xref target="RFC9132"></xref>: use the JSON names and types
+      defined in <xref target="maptab"></xref>. These conventions are
+      inherited from <xref target="RFC9132"></xref>.</t>
     </section>
 
     <section anchor="maptab" title="YANG/JSON Mapping Parameters to CBOR">
@@ -856,7 +864,11 @@ module ietf-dots-robust-trans {
   }
 }
 <CODE ENDS>]]></artwork>
-        </figure></t>
+        </figure><list style="empty">
+          <t>Note to the RFC Editor: Please replace RFC NNNN with the RFC
+          number assignd to <xref
+          target="I-D.ietf-core-new-block"></xref>.</t>
+        </list></t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -920,7 +932,7 @@ module ietf-dots-robust-trans {
         <t><figure>
             <artwork><![CDATA[  Name: ietf-dots-robust-trans
   Namespace: urn:ietf:params:xml:ns:yang:ietf-dots-robust-trans
-  Maintained by IANA: N
+  Maintained by IANA? N
   Prefix: dots-robust
   Reference: RFC XXXX
 ]]></artwork>
@@ -942,7 +954,10 @@ module ietf-dots-robust-trans {
     </section>
 
     <section anchor="ack" title="Acknowledgements">
-      <t>Thanks to Michal Va&scaron;ko fro the yangdoctors review.</t>
+      <t>Thanks to Tiru Reddy, Meiling Chen, and kaname nishizuka for the
+      review.</t>
+
+      <t>Thanks to Michal Va&scaron;ko for the yangdoctors review. </t>
     </section>
   </middle>
 
