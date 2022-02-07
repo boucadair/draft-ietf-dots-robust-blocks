@@ -370,10 +370,22 @@ Table 1: Congestion Control Parameters]]></artwork>
       <t>DOTS clients follow the procedure specified in Section 4.5 of <xref
       target="RFC9132"></xref> to negotiate, configure, and retrieve the DOTS
       signal channel session behavior (including Q-Block parameters) with DOTS
-      peers. As specified in Section 7.2 of <xref
-      target="I-D.ietf-core-new-block"></xref>, negotiated 'non-probing-wait'
-      and 'non-partial-timeout' values are used without applying any
-      jitter.</t>
+      peers. </t>
+
+      <t><list style="hanging">
+          <t hangText="Implementation Note 1:">'non-probing-wait' ideally
+          should be left having some jitter and so should not be hard-coded
+          with an explicit value. It is suggested to use a base value (using
+          NON_TIMEOUT instead of NON_TIMEOUT_RANDOM) and, then, the jitter
+          (ACK_RANDOM_FACTOR - 1) is added to each time the value is
+          checked.</t>
+
+          <t hangText="Implementation Note 2:">If any of the signal channel
+          session configuration parameters is updated, the 'non-probing-wait'
+          and 'non-partial-timeout' values should be recalculated according to
+          the definition algorithms in Section 7.2 of <xref
+          target="I-D.ietf-core-new-block"></xref>. </t>
+        </list></t>
 
       <t>An example of PUT message to configure Q-Block parameters is depicted
       in <xref target="put"></xref>. In this example, the 'max-payloads'

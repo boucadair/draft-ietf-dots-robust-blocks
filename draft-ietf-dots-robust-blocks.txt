@@ -76,13 +76,13 @@ Table of Contents
    5.  DOTS Robust Block Transmission YANG Module  . . . . . . . . .  11
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
      6.1.  DOTS Signal Channel CBOR Mappings Registry  . . . . . . .  18
-     6.2.  DOTS Robust Block Transmission YANG Module  . . . . . . .  18
+     6.2.  DOTS Robust Block Transmission YANG Module  . . . . . . .  19
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
-   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  19
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  20
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
+   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  20
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
 1.  Introduction
 
@@ -397,9 +397,20 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
    DOTS clients follow the procedure specified in Section 4.5 of
    [RFC9132] to negotiate, configure, and retrieve the DOTS signal
    channel session behavior (including Q-Block parameters) with DOTS
-   peers.  As specified in Section 7.2 of [I-D.ietf-core-new-block],
-   negotiated 'non-probing-wait' and 'non-partial-timeout' values are
-   used without applying any jitter.
+   peers.
+
+   Implementation Note 1:  'non-probing-wait' ideally should be left
+      having some jitter and so should not be hard-coded with an
+      explicit value.  It is suggested to use a base value (using
+      NON_TIMEOUT instead of NON_TIMEOUT_RANDOM) and, then, the jitter
+      (ACK_RANDOM_FACTOR - 1) is added to each time the value is
+      checked.
+
+   Implementation Note 2:  If any of the signal channel session
+      configuration parameters is updated, the 'non-probing-wait' and
+      'non-partial-timeout' values should be recalculated according to
+      the definition algorithms in Section 7.2 of
+      [I-D.ietf-core-new-block].
 
    An example of PUT message to configure Q-Block parameters is depicted
    in Figure 2.  In this example, the 'max-payloads' attribute is set to
@@ -431,6 +442,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
               "max-retransmit": {
                 "current-value": 3
               },
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                 [Page 8]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
+
               "ack-timeout": {
                 "current-value-decimal": "2.00"
               },
@@ -442,14 +461,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
               },
               "ietf-dots-robust-trans:non-max-retransmit": {
                 "current-value": 3
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                 [Page 8]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
               },
               "ietf-dots-robust-trans:non-timeout": {
                 "current-value-decimal": "2.00"
@@ -487,6 +498,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
                 "current-value-decimal": "2.00"
               },
               "ietf-dots-robust-trans:non-receive-timeout": {
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                 [Page 9]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
+
                 "current-value-decimal": "4.00"
               },
               "ietf-dots-robust-trans:non-probing-wait": {
@@ -498,13 +517,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
             }
           }
         }
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                 [Page 9]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
 
       Figure 2: Example of PUT to Convey the Configuration Parameters
 
@@ -524,6 +536,31 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
    *  Note: Implementers must check that the mapping output provided by
       their YANG-to-CBOR encoding schemes is aligned with the content of
       Table 2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 10]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
 
    +----------------------+------------+------+---------------+--------+
    |   Parameter Name     | YANG       | CBOR | CBOR Major    | JSON   |
@@ -556,12 +593,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
               Table 2: YANG/JSON Mapping Parameters to CBOR
 
 
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 10]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
 5.  DOTS Robust Block Transmission YANG Module
 
    The "ietf-dots-robust-trans" module is not intended to be used via
@@ -579,6 +610,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
        reference
          "RFC 9132: Distributed Denial-of-Service Open Threat
                     Signaling (DOTS) Signal Channel Specification";
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 11]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
+
      }
      import ietf-yang-structure-ext {
        prefix sx;
@@ -610,14 +649,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
         to the license terms contained in, the Simplified BSD License
         set forth in Section 4.c of the IETF Trust's Legal Provisions
         Relating to IETF Documents
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 11]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
         (http://trustee.ietf.org/license-info).
 
         This version of this YANG module is part of RFC XXXX; see
@@ -635,6 +666,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
      grouping robust-transmission-attributes {
        description
          "A set of DOTS signal channel session configuration
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 12]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
+
           that are negotiated between DOTS agents when
           making use of Q-Block1 and Q-Block2 Options.";
        container max-payloads {
@@ -666,14 +705,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
            default "10";
            description
              "Current max-payloads value.";
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 12]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
            reference
              "RFC NNNN: Constrained Application Protocol (CoAP)
                         Block-Wise Transfer Options Supporting
@@ -691,6 +722,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
               data nodes can be included.";
            case server-to-client-only {
              description
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 13]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
+
                "These data nodes appear only in a message sent
                 from the server to the client.";
              leaf max-value {
@@ -722,14 +761,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
             sending sets of MAX_PAYLOADS payloads for the same
             body.";
          choice direction {
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 13]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
            description
              "Indicates the communication direction in which the
               data nodes can be included.";
@@ -747,6 +778,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
              }
              leaf min-value-decimal {
                type decimal64 {
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 14]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
+
                  fraction-digits 2;
                }
                units "seconds";
@@ -778,14 +817,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
              "Indicates the communication direction in which the
               data nodes can be included.";
            case server-to-client-only {
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 14]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
              description
                "These data nodes appear only in a message sent
                 from the server to the client.";
@@ -803,6 +834,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
                }
                units "seconds";
                description
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 15]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
+
                  "Minimum non-receive-timeout value.";
              }
            }
@@ -834,14 +873,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
                "These data nodes appear only in a message sent
                 from the server to the client.";
              leaf max-value-decimal {
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 15]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
                type decimal64 {
                  fraction-digits 2;
                }
@@ -859,6 +890,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
              }
            }
          }
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 16]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
+
          leaf current-value-decimal {
            type decimal64 {
              fraction-digits 2;
@@ -890,14 +929,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
                }
                units "seconds";
                description
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 16]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
                  "Maximum non-partial-wait value.";
              }
              leaf min-value-decimal {
@@ -915,6 +946,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
              fraction-digits 2;
            }
            units "seconds";
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 17]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
+
            default "247.00";
            description
              "Current non-partial-wait value.";
@@ -947,13 +986,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
    }
    <CODE ENDS>
 
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 17]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
       Note to the RFC Editor: Please replace RFC NNNN with the RFC
       number assignd to [I-D.ietf-core-new-block].
 
@@ -967,6 +999,16 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
    *  Note to the RFC Editor: Please replace TBA1-TBA6 with the CBOR
       keys that are assigned from the 32768-49151 range.  Please update
       Table 2 accordingly.
+
+
+
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 18]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
 
  +------------------------+-------+-------+------------+---------------+
  | Parameter Name         | CBOR  | CBOR  | Change     | Specification |
@@ -1001,15 +1043,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
      Registrant Contact: The IESG.
      XML: N/A; the requested URI is an XML namespace.
 
-
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 18]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
    This document requests IANA to register the following YANG module in
    the "YANG Module Names" subregistry [RFC6020] within the "YANG
    Parameters" registry.
@@ -1024,6 +1057,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
 
    The security considerations for the DOTS signal channel protocol are
    discussed in Section 11 of [RFC9132].
+
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 19]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
 
    CoAP-specific security considerations are discussed in Section 11 of
    [I-D.ietf-core-new-block].
@@ -1057,15 +1098,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 19]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
    [RFC3688]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688,
               DOI 10.17487/RFC3688, January 2004,
               <https://www.rfc-editor.org/info/rfc3688>.
@@ -1079,6 +1111,16 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/info/rfc7252>.
+
+
+
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 20]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
 
    [RFC7959]  Bormann, C. and Z. Shelby, Ed., "Block-Wise Transfers in
               the Constrained Application Protocol (CoAP)", RFC 7959,
@@ -1115,13 +1157,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
               <https://www.ietf.org/archive/id/draft-ietf-dots-
               telemetry-23.txt>.
 
-
-
-Boucadair & Shallow      Expires 11 August 2022                [Page 20]
-
-Internet-Draft       DOTS Robust Block Transmission        February 2022
-
-
    [Key-Map]  IANA, "DOTS Signal Channel CBOR Key Values",
               <https://www.iana.org/assignments/dots/dots.xhtml#dots-
               signal-channel-cbor-key-values>.
@@ -1134,6 +1169,14 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
               Threat Signaling (DOTS) Requirements", RFC 8612,
               DOI 10.17487/RFC8612, May 2019,
               <https://www.rfc-editor.org/info/rfc8612>.
+
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 21]
+
+Internet-Draft       DOTS Robust Block Transmission        February 2022
+
 
 Authors' Addresses
 
@@ -1173,4 +1216,17 @@ Authors' Addresses
 
 
 
-Boucadair & Shallow      Expires 11 August 2022                [Page 21]
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair & Shallow      Expires 11 August 2022                [Page 22]
