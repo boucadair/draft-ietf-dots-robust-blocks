@@ -10,7 +10,7 @@ Expires: 11 August 2022                                  7 February 2022
 
    Distributed Denial-of-Service Open Threat Signaling (DOTS) Signal
      Channel Configuration Attributes for Robust Block Transmission
-                  draft-ietf-dots-robust-blocks-latest
+                    draft-ietf-dots-robust-blocks-02
 
 Abstract
 
@@ -20,6 +20,9 @@ Abstract
    and faster transmission rates for large amounts of data with less
    packet interchanges as well as supporting faster recovery should any
    of the blocks get lost in transmission.
+
+   This document defines a YANG data model for representing these new
+   DOTS signal channel configuration parameters.
 
 Status of This Memo
 
@@ -43,13 +46,10 @@ Copyright Notice
    Copyright (c) 2022 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
-
-
-
-
-
-
-
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
 
 
 
@@ -58,10 +58,6 @@ Boucadair & Shallow      Expires 11 August 2022                 [Page 1]
 Internet-Draft       DOTS Robust Block Transmission        February 2022
 
 
-   This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents (https://trustee.ietf.org/
-   license-info) in effect on the date of publication of this document.
-   Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
    extracted from this document must include Revised BSD License text as
    described in Section 4.e of the Trust Legal Provisions and are
@@ -102,10 +98,14 @@ Table of Contents
    previous block has completed.  Packet, and hence block transmission
    rate, is controlled by Round Trip Times (RTTs).
 
-   There is a requirement for these blocks of data to be transmitted at
-   higher rates under network conditions where there may be asymmetrical
-   transient packet loss (i.e., responses may get dropped).  An example
-   is when a network is subject to a Distributed Denial of Service
+
+
+
+
+
+
+
+
 
 
 
@@ -114,6 +114,10 @@ Boucadair & Shallow      Expires 11 August 2022                 [Page 2]
 Internet-Draft       DOTS Robust Block Transmission        February 2022
 
 
+   There is a requirement for these blocks of data to be transmitted at
+   higher rates under network conditions where there may be asymmetrical
+   transient packet loss (i.e., responses may get dropped).  An example
+   is when a network is subject to a Distributed Denial of Service
    (DDoS) attack and there is a need for DDoS mitigation agents relying
    upon CoAP to communicate with each other (e.g.,
    [I-D.ietf-dots-telemetry]).  As a reminder, [RFC7959] recommends the
@@ -128,10 +132,10 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
    provides additional properties that are tailored towards the intended
    DOTS transmission.  Concretely, [I-D.ietf-core-new-block] primarily
    targets applications such as DDoS Open Threat Signaling (DOTS) that
-   can't use Confirmable (CON) responses to handle potential packet loss
-   and that support application-specific mechanisms to assess whether
-   the remote peer is able to handle the messages sent by a CoAP
-   endpoint (e.g., DOTS heartbeats in Section 4.7 of [RFC9132]).
+   can't use Confirmable responses to handle potential packet loss and
+   that support application-specific mechanisms to assess whether the
+   remote peer is able to handle the messages sent by a CoAP endpoint
+   (e.g., DOTS heartbeats in Section 4.7 of [RFC9132]).
 
    [I-D.ietf-core-new-block] includes guards to prevent a CoAP agent
    from overloading the network by adopting an aggressive sending rate.
@@ -158,10 +162,6 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
    the attributes listed in Table 1 are not supported.  This document
    defines new DOTS signal channel attributes that are used to customize
    the configuration of robust block transmission in a DOTS context.
-
-
-
-
 
 
 
@@ -199,7 +199,7 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
       transmitted at any one time.
 
    NON_MAX_RETRANSMIT:  is the maximum number of times a request for the
-      retransmission of missings payloads can occur without a response
+      retransmission of missing payloads can occur without a response
       from the remote peer.  By default, NON_MAX_RETRANSMIT has the same
       value as MAX_RETRANSMIT (Section 4.8 of [RFC7252]).
 
@@ -214,8 +214,8 @@ Internet-Draft       DOTS Robust Block Transmission        February 2022
    NON_PROBING_WAIT:  is used to limit the potential wait needed
       calculated when using PROBING_WAIT.
 
-   NON_PARTIAL_TIMEOUT:  is used for expiring partially received bodies
-      (Section 4.8.2 of [RFC7252]).
+   NON_PARTIAL_TIMEOUT:  is used for expiring partially received bodies.
+
 
 
 
