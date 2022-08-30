@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-dots-robust-blocks-02"
+<rfc category="std" docName="draft-ietf-dots-robust-blocks-04"
      ipr="trust200902">
   <front>
     <title abbrev="DOTS Robust Block Transmission">Distributed
@@ -122,33 +122,32 @@
       transient packet loss (i.e., responses may get dropped). An example is
       when a network is subject to a Distributed Denial of Service (DDoS)
       attack and there is a need for DDoS mitigation agents relying upon CoAP
-      to communicate with each other (e.g., <xref
-      target="I-D.ietf-dots-telemetry"></xref>). As a reminder, <xref
-      target="RFC7959"></xref> recommends the use of Confirmable (CON)
-      responses to handle potential packet loss. However, such a
-      recommendation does not work with a flooded pipe DDoS situation because
-      the returning ACK packets may not get through.</t>
+      to communicate with each other (e.g., <xref target="RFC9244"></xref>).
+      As a reminder, <xref target="RFC7959"></xref> recommends the use of
+      Confirmable (CON) responses to handle potential packet loss. However,
+      such a recommendation does not work with a flooded pipe DDoS situation
+      because the returning ACK packets may not get through.</t>
 
       <t>The block-wise transfer specified in <xref target="RFC7959"></xref>
       covers the general case, but falls short in situations where packet loss
       is highly asymmetrical. The mechanism specified in <xref
-      target="I-D.ietf-core-new-block"></xref> provides roughly similar
-      features to the Block1/Block2 Options, but provides additional
-      properties that are tailored towards the intended DOTS transmission.
-      Concretely, <xref target="I-D.ietf-core-new-block"></xref> primarily
-      targets applications such as DDoS Open Threat Signaling (DOTS) that
-      can't use Confirmable responses to handle potential packet loss and that
-      support application-specific mechanisms to assess whether the remote
-      peer is able to handle the messages sent by a CoAP endpoint (e.g., DOTS
-      heartbeats in Section 4.7 of <xref target="RFC9132"></xref>).</t>
+      target="RFC9177"></xref> provides roughly similar features to the
+      Block1/Block2 Options, but provides additional properties that are
+      tailored towards the intended DOTS transmission. Concretely, <xref
+      target="RFC9177"></xref> primarily targets applications such as DDoS
+      Open Threat Signaling (DOTS) that can't use Confirmable responses to
+      handle potential packet loss and that support application-specific
+      mechanisms to assess whether the remote peer is able to handle the
+      messages sent by a CoAP endpoint (e.g., DOTS heartbeats in Section 4.7
+      of <xref target="RFC9132"></xref>).</t>
 
-      <t><xref target="I-D.ietf-core-new-block"></xref> includes guards to
-      prevent a CoAP agent from overloading the network by adopting an
-      aggressive sending rate. These guards are followed in addition to the
-      existing CoAP congestion control as specified in Section 4.7 of <xref
+      <t><xref target="RFC9177"></xref> includes guards to prevent a CoAP
+      agent from overloading the network by adopting an aggressive sending
+      rate. These guards are followed in addition to the existing CoAP
+      congestion control as specified in Section 4.7 of <xref
       target="RFC7252"></xref> (mainly, PROBING_RATE). Table 1 lists the
       additional CoAP attributes that are used for the guards (Section 7.2 of
-      <xref target="I-D.ietf-core-new-block"></xref>).</t>
+      <xref target="RFC9177"></xref>).</t>
 
       <t><figure align="center">
           <artwork align="center"><![CDATA[+---------------------+-------------------+
@@ -168,9 +167,9 @@ Table 1: Congestion Control Parameters]]></artwork>
       <t>PROBING_RATE and other transmission parameters are negotiated between
       DOTS peers as discussed in Section 4.5.2 of <xref
       target="RFC9132"></xref>. Nevertheless, the attributes listed in Table 1
-      are not supported. This document defines new DOTS signal channel
-      attributes that are used to customize the configuration of robust block
-      transmission in a DOTS context.</t>
+      are not supported in <xref target="RFC9132"></xref>. This document
+      defines new DOTS signal channel attributes that are used to customize
+      the configuration of robust block transmission in a DOTS context. </t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -194,9 +193,9 @@ Table 1: Congestion Control Parameters]]></artwork>
     </section>
 
     <section title="DOTS Attributes for Robust Block Transmission">
-      <t>Section 7.2 of <xref target="I-D.ietf-core-new-block"></xref> defines
-      the following attributes that are used for congestion control
-      purposes:<list style="hanging">
+      <t>Section 7.2 of <xref target="RFC9177"></xref> defines the following
+      attributes that are used for congestion control purposes:<list
+          style="hanging">
           <t hangText="MAX_PAYLOADS:">is the maximum number of payloads that
           can be transmitted at any one time.</t>
 
@@ -216,7 +215,7 @@ Table 1: Congestion Control Parameters]]></artwork>
           NON_RECEIVE_TIMEOUT has a value of twice NON_TIMEOUT.</t>
 
           <t hangText="NON_PROBING_WAIT:">is used to limit the potential wait
-          needed calculated when using PROBING_WAIT.</t>
+          needed calculated when using PROBING_RATE.</t>
 
           <t hangText="NON_PARTIAL_TIMEOUT:">is used for expiring partially
           received bodies.</t>
@@ -238,39 +237,42 @@ Table 1: Congestion Control Parameters]]></artwork>
 
       <t><list style="hanging">
           <t hangText="max-payloads:">This attribute echoes the MAX_PAYLOADS
-          parameter in <xref target="I-D.ietf-core-new-block"></xref>.<vspace
-          blankLines="1" />This is an optional attribute.</t>
+          parameter in <xref target="RFC9177"></xref>.<vspace
+          blankLines="1" />This is an optional attribute. If the parameter is
+          supplied in both &lsquo;idle-config&rsquo; and
+          &lsquo;mitigating-config&rsquo;, then it MUST convey the same value.
+          If the parameter is only provided as part of
+          &lsquo;idle-config&rsquo; or &lsquo;mitigating-config&rsquo;, then
+          the other (missing) definition MUST be updated to the same
+          value.</t>
 
           <t hangText="non-max-retransmit:">This attribute echoes the
-          NON_MAX_RETRANSMIT parameter in <xref
-          target="I-D.ietf-core-new-block"></xref>. The default value of this
-          attribute is 'max-retransmit'. Note that DOTS uses a default value
-          of '3' instead of '4' used for the generic CoAP use (Section 4.5.2
-          of <xref target="RFC9132"></xref>) for max-transmit. <vspace
-          blankLines="1" />This is an optional attribute.</t>
+          NON_MAX_RETRANSMIT parameter in <xref target="RFC9177"></xref>. The
+          default value of this attribute is 'max-retransmit'. Note that DOTS
+          uses a default value of '3' instead of '4' used for the generic CoAP
+          use (Section 4.5.2 of <xref target="RFC9132"></xref>) for
+          max-transmit. <vspace blankLines="1" />This is an optional
+          attribute.</t>
 
           <t hangText="non-timeout:">This attribute echoes the NON_TIMEOUT
-          parameter in <xref target="I-D.ietf-core-new-block"></xref>. The
-          default value of this attribute is 'ack-timeout'.<vspace
-          blankLines="1" />This is an optional attribute.</t>
-
-          <t hangText="non-receive-timeout:">This attribute echoes the
-          NON_RECEIVE_TIMEOUT parameter in <xref
-          target="I-D.ietf-core-new-block"></xref>. The default value of this
-          attribute is twice 'non-timeout'.<vspace blankLines="1" />This is an
+          parameter in <xref target="RFC9177"></xref>. The default value of
+          this attribute is 'ack-timeout'.<vspace blankLines="1" />This is an
           optional attribute.</t>
 
+          <t hangText="non-receive-timeout:">This attribute echoes the
+          NON_RECEIVE_TIMEOUT parameter in <xref target="RFC9177"></xref>. The
+          default value of this attribute is twice 'non-timeout'.<vspace
+          blankLines="1" />This is an optional attribute.</t>
+
           <t hangText="non-probing-wait:">This attribute echoes the
-          NON_PROBING_WAIT parameter in <xref
-          target="I-D.ietf-core-new-block"></xref>. The default value of this
-          attribute is 247s.<vspace blankLines="1" />This is an optional
-          attribute.</t>
+          NON_PROBING_WAIT parameter in <xref target="RFC9177"></xref>. The
+          default value of this attribute is 247s.<vspace
+          blankLines="1" />This is an optional attribute.</t>
 
           <t hangText="non-partial-timeout:">This attribute echoes the
-          NON_PARTIAL_TIMEOUT parameter in <xref
-          target="I-D.ietf-core-new-block"></xref>. The default value of this
-          attribute is 274s.<vspace blankLines="1" />This is an optional
-          attribute.</t>
+          NON_PARTIAL_TIMEOUT parameter in <xref target="RFC9177"></xref>. The
+          default value of this attribute is 274s.<vspace
+          blankLines="1" />This is an optional attribute.</t>
         </list></t>
 
       <t>The tree structure of the "ietf-dots-robust-trans" module (<xref
@@ -368,7 +370,7 @@ Table 1: Congestion Control Parameters]]></artwork>
       <t>DOTS clients follow the procedure specified in Section 4.5 of <xref
       target="RFC9132"></xref> to negotiate, configure, and retrieve the DOTS
       signal channel session behavior (including Q-Block parameters) with DOTS
-      peers. </t>
+      peers.</t>
 
       <t><list style="hanging">
           <t hangText="Implementation Note 1:">'non-probing-wait' ideally
@@ -382,7 +384,8 @@ Table 1: Congestion Control Parameters]]></artwork>
           session configuration parameters is updated, the 'non-probing-wait'
           and 'non-partial-timeout' values should be recalculated according to
           the definition algorithms in Section 7.2 of <xref
-          target="I-D.ietf-core-new-block"></xref>. </t>
+          target="RFC9177"></xref> unless explicit values are provided as part
+          of the negotiated configuration. </t>
         </list></t>
 
       <t>An example of PUT message to configure Q-Block parameters is depicted
@@ -457,7 +460,7 @@ Table 1: Congestion Control Parameters]]></artwork>
              "current-value-decimal": "1.50"
            },
            "ietf-dots-robust-trans:max-payloads": {
-             "current-value": 15
+             "current-value": 10
            },
            "ietf-dots-robust-trans:non-max-retransmit": {
              "current-value": 3
@@ -583,7 +586,7 @@ module ietf-dots-robust-trans {
 
      Redistribution and use in source and binary forms, with or
      without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Simplified BSD License
+     to the license terms contained in, the Revised BSD License
      set forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
      (http://trustee.ietf.org/license-info).
@@ -635,7 +638,7 @@ module ietf-dots-robust-trans {
         description
           "Current max-payloads value.";
         reference
-          "RFC NNNN: Constrained Application Protocol (CoAP)  
+          "RFC 9177: Constrained Application Protocol (CoAP)  
                      Block-Wise Transfer Options Supporting 
                      Robust Transmission, Section 7.2";
       }
@@ -671,7 +674,7 @@ module ietf-dots-robust-trans {
         description
           "Current non-max-retransmit value.";
         reference
-          "RFC NNNN: Constrained Application Protocol (CoAP)  
+          "RFC 9177: Constrained Application Protocol (CoAP)  
                      Block-Wise Transfer Options Supporting 
                      Robust Transmission, Section 7.2";
       }
@@ -716,7 +719,7 @@ module ietf-dots-robust-trans {
         description
           "Current ack-timeout value.";
         reference
-          "RFC NNNN: Constrained Application Protocol (CoAP)  
+          "RFC 9177: Constrained Application Protocol (CoAP)  
                      Block-Wise Transfer Options Supporting 
                      Robust Transmission, Section 7.2";
       }
@@ -760,7 +763,7 @@ module ietf-dots-robust-trans {
         description
           "Current non-receive-timeout value.";
         reference
-          "RFC NNNN: Constrained Application Protocol (CoAP)  
+          "RFC 9177: Constrained Application Protocol (CoAP)  
                      Block-Wise Transfer Options Supporting 
                      Robust Transmission, Section 7.2";
       }
@@ -804,7 +807,7 @@ module ietf-dots-robust-trans {
         description
           "Current non-probing-wait value.";
         reference
-          "RFC NNNN: Constrained Application Protocol (CoAP)  
+          "RFC 9177: Constrained Application Protocol (CoAP)  
                      Block-Wise Transfer Options Supporting 
                      Robust Transmission, Section 7.2";
       }
@@ -847,7 +850,7 @@ module ietf-dots-robust-trans {
         description
           "Current non-partial-wait value.";
         reference
-          "RFC NNNN: Constrained Application Protocol (CoAP)  
+          "RFC 9177: Constrained Application Protocol (CoAP)  
                      Block-Wise Transfer Options Supporting 
                      Robust Transmission, Section 7.2";
       }
@@ -874,11 +877,7 @@ module ietf-dots-robust-trans {
   }
 }
 <CODE ENDS>]]></artwork>
-        </figure><list style="empty">
-          <t>Note to the RFC Editor: Please replace RFC NNNN with the RFC
-          number assignd to <xref
-          target="I-D.ietf-core-new-block"></xref>.</t>
-        </list></t>
+        </figure></t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -955,7 +954,7 @@ module ietf-dots-robust-trans {
       discussed in Section 11 of <xref target="RFC9132"></xref>.</t>
 
       <t>CoAP-specific security considerations are discussed in Section 11 of
-      <xref target="I-D.ietf-core-new-block"></xref>.</t>
+      <xref target="RFC9177"></xref>.</t>
 
       <t>This document defines YANG data structures that are meant to be used
       as an abstract representation in DOTS signal channel messages. As such,
@@ -967,7 +966,9 @@ module ietf-dots-robust-trans {
       <t>Thanks to Tiru Reddy, Meiling Chen, and kaname nishizuka for the
       review.</t>
 
-      <t>Thanks to Michal Va&scaron;ko for the yangdoctors review. </t>
+      <t>Thanks to Michal Va&scaron;ko for the yangdoctors review.</t>
+
+      <t>Thanks to Valery Smyslov for shepherding the document.</t>
     </section>
   </middle>
 
@@ -985,7 +986,7 @@ module ietf-dots-robust-trans {
 
       <?rfc include='reference.RFC.8791'?>
 
-      <?rfc include='reference.I-D.ietf-core-new-block'?>
+      <?rfc include='reference.RFC.9177'?>
 
       <?rfc include='reference.RFC.9132'?>
 
@@ -995,7 +996,7 @@ module ietf-dots-robust-trans {
     </references>
 
     <references title="Informative References">
-      <?rfc include="reference.I-D.ietf-dots-telemetry"?>
+      <?rfc include="reference.RFC.9244"?>
 
       <?rfc include='reference.RFC.8612'?>
 
