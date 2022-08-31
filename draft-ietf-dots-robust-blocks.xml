@@ -87,8 +87,8 @@
 
     <abstract>
       <t>This document specifies new DOTS signal channel configuration
-      parameters that are negotiated between DOTS peers to enable the use of
-      Q-Block1 and Q-Block2 CoAP Options. These options enable robust and
+      parameters that can be negotiated between DOTS peers to enable the use
+      of Q-Block1 and Q-Block2 CoAP options. These options enable robust and
       faster transmission rates for large amounts of data with less packet
       interchanges as well as supporting faster recovery should any of the
       blocks get lost in transmission.</t>
@@ -105,17 +105,17 @@
       UDP instead of TCP. The message layer of CoAP over UDP includes support
       for reliable delivery, simple congestion control, and flow control. The
       block-wise transfer <xref target="RFC7959"></xref> introduced the CoAP
-      Block1 and Block2 Options to handle data records that cannot fit in a
+      Block1 and Block2 options to handle data records that cannot fit in a
       single IP packet, so not having to rely on IP fragmentation. The
       block-wise transfer was further updated by <xref
       target="RFC8323"></xref> for use over TCP, TLS, and WebSockets.</t>
 
-      <t>The CoAP Block1 and Block2 Options work well in environments where
+      <t>The CoAP Block1 and Block2 options work well in environments where
       there are no or minimal packet losses. These options operate
       synchronously where each individual block has to be requested and can
       only ask for (or send) the next block when the request for the previous
       block has completed. Packet, and hence block transmission rate, is
-      controlled by Round Trip Times (RTTs).</t>
+      controlled by Round-Trip Times (RTTs).</t>
 
       <t>There is a requirement for these blocks of data to be transmitted at
       higher rates under network conditions where there may be asymmetrical
@@ -132,11 +132,11 @@
       covers the general case, but falls short in situations where packet loss
       is highly asymmetrical. The mechanism specified in <xref
       target="RFC9177"></xref> provides roughly similar features to the
-      Block1/Block2 Options, but provides additional properties that are
-      tailored towards the intended DOTS transmission. Concretely, <xref
-      target="RFC9177"></xref> primarily targets applications such as DDoS
-      Open Threat Signaling (DOTS) that can't use Confirmable responses to
-      handle potential packet loss and that support application-specific
+      Block1/Block2 options, but provides additional properties that are
+      tailored towards the intended DDoS Open Threat Signaling (DOTS)
+      transmission. Concretely, <xref target="RFC9177"></xref> primarily
+      targets applications such as DOTS that can't use Confirmable responses
+      to handle potential packet loss and that support application-specific
       mechanisms to assess whether the remote peer is able to handle the
       messages sent by a CoAP endpoint (e.g., DOTS heartbeats in Section 4.7
       of <xref target="RFC9132"></xref>).</t>
@@ -156,6 +156,7 @@
 | MAX_PAYLOADS        |                10 |
 | NON_MAX_RETRANSMIT  |                 4 |
 | NON_TIMEOUT         |               2 s |
+| NON_TIMEOUT_RANDOM  |     between 2-3 s |
 | NON_RECEIVE_TIMEOUT |               4 s |
 | NON_PROBING_WAIT    | between 247-248 s |
 | NON_PARTIAL_TIMEOUT |             247 s |
@@ -169,14 +170,14 @@ Table 1: Congestion Control Parameters]]></artwork>
       target="RFC9132"></xref>. Nevertheless, the attributes listed in Table 1
       are not supported in <xref target="RFC9132"></xref>. This document
       defines new DOTS signal channel attributes that are used to customize
-      the configuration of robust block transmission in a DOTS context. </t>
+      the configuration of robust block transmission in a DOTS context.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
       <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
       "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
       "OPTIONAL" in this document are to be interpreted as described in BCP 14
-      <xref target="RFC2119"></xref><xref target="RFC8174"></xref> when, and
+      <xref target="RFC2119"></xref> <xref target="RFC8174"></xref> when, and
       only when, they appear in all capitals, as shown here.</t>
 
       <t>Readers should be familiar with the terms and concepts defined in
@@ -209,6 +210,11 @@ Table 1: Congestion Control Parameters]]></artwork>
           sending sets of MAX_PAYLOADS payloads for the same body. NON_TIMEOUT
           has the same value as ACK_TIMEOUT (Section 4.8 of <xref
           target="RFC7252"></xref>).</t>
+
+          <t hangText="NON_TIMEOUT_RANDOM:">is the initial actual delay
+          between sending the first two MAX_PAYLOADS_SETs of the same body. It
+          is a random duration between NON_TIMEOUT and (NON_TIMEOUT *
+          ACK_RANDOM_FACTOR).</t>
 
           <t hangText="NON_RECEIVE_TIMEOUT:">is the maximum time to wait for a
           missing payload before requesting retransmission. By default,
@@ -256,8 +262,10 @@ Table 1: Congestion Control Parameters]]></artwork>
 
           <t hangText="non-timeout:">This attribute echoes the NON_TIMEOUT
           parameter in <xref target="RFC9177"></xref>. The default value of
-          this attribute is 'ack-timeout'.<vspace blankLines="1" />This is an
-          optional attribute.</t>
+          this attribute is 'ack-timeout'. <vspace blankLines="1" />This
+          attribute is also used to compute the NON_TIMEOUT_RANDOM
+          attribute.<vspace blankLines="1" />This is an optional attribute.
+          </t>
 
           <t hangText="non-receive-timeout:">This attribute echoes the
           NON_RECEIVE_TIMEOUT parameter in <xref target="RFC9177"></xref>. The
@@ -265,13 +273,12 @@ Table 1: Congestion Control Parameters]]></artwork>
           blankLines="1" />This is an optional attribute.</t>
 
           <t hangText="non-probing-wait:">This attribute echoes the
-          NON_PROBING_WAIT parameter in <xref target="RFC9177"></xref>. The
-          default value of this attribute is 247s.<vspace
-          blankLines="1" />This is an optional attribute.</t>
+          NON_PROBING_WAIT parameter in <xref target="RFC9177"></xref>.
+          <vspace blankLines="1" />This is an optional attribute.</t>
 
           <t hangText="non-partial-timeout:">This attribute echoes the
           NON_PARTIAL_TIMEOUT parameter in <xref target="RFC9177"></xref>. The
-          default value of this attribute is 274s.<vspace
+          default value of this attribute is 247 seconds.<vspace
           blankLines="1" />This is an optional attribute.</t>
         </list></t>
 
@@ -385,17 +392,16 @@ Table 1: Congestion Control Parameters]]></artwork>
           and 'non-partial-timeout' values should be recalculated according to
           the definition algorithms in Section 7.2 of <xref
           target="RFC9177"></xref> unless explicit values are provided as part
-          of the negotiated configuration. </t>
+          of the negotiated configuration.</t>
         </list></t>
 
-      <t>An example of PUT message to configure Q-Block parameters is depicted
-      in <xref target="put"></xref>. In this example, the 'max-payloads'
-      attribute is set to '15' when no mitigation is active, while it is set
-      to '10' when a mitigation is active. The same value is used for
-      'non-max-retransmit', 'non-timeout', 'non-receive-timeout',
-      'non-probing-wait', and "non-partial-wait" in both idle and mitigation
-      times. The meaning of other attributes is detailed in Section 4.5 of
-      <xref target="RFC9132"></xref>.</t>
+      <t>An example of a PUT message to configure Q-Block parameters is
+      depicted in <xref target="put"></xref>. In this example, a non-default
+      value is configured for the 'max-payloads' attribute, while default
+      values are used for 'non-max-retransmit', 'non-timeout',
+      'non-receive-timeout', and 'non-partial-wait' attributes in both idle
+      and mitigation times. The meaning of the other attributes is detailed in
+      Section 4.5 of <xref target="RFC9132"></xref>.</t>
 
       <t><figure align="center" anchor="put"
           title="Example of PUT to Convey the Configuration Parameters">
@@ -428,7 +434,7 @@ Table 1: Congestion Control Parameters]]></artwork>
              "current-value-decimal": "1.50"
            },
            "ietf-dots-robust-trans:max-payloads": {
-             "current-value": 10
+             "current-value": 15
            },
            "ietf-dots-robust-trans:non-max-retransmit": {
              "current-value": 3
@@ -460,7 +466,7 @@ Table 1: Congestion Control Parameters]]></artwork>
              "current-value-decimal": "1.50"
            },
            "ietf-dots-robust-trans:max-payloads": {
-             "current-value": 10
+             "current-value": 15
            },
            "ietf-dots-robust-trans:non-max-retransmit": {
              "current-value": 3
@@ -607,7 +613,7 @@ module ietf-dots-robust-trans {
     description
       "A set of DOTS signal channel session configuration
        that are negotiated between DOTS agents when
-       making use of Q-Block1 and Q-Block2 Options.";
+       making use of Q-Block1 and Q-Block2 options.";
     container max-payloads {
       description
         "Indicates the maximum number of payloads that
@@ -803,7 +809,6 @@ module ietf-dots-robust-trans {
           fraction-digits 2;
         }
         units "seconds";
-        default "247.00";
         description
           "Current non-probing-wait value.";
         reference
@@ -963,12 +968,13 @@ module ietf-dots-robust-trans {
     </section>
 
     <section anchor="ack" title="Acknowledgements">
-      <t>Thanks to Tiru Reddy, Meiling Chen, and kaname nishizuka for the
+      <t>Thanks to Tiru Reddy, Meiling Chen, and Kaname Nishizuka for the
       review.</t>
 
       <t>Thanks to Michal Va&scaron;ko for the yangdoctors review.</t>
 
-      <t>Thanks to Valery Smyslov for shepherding the document.</t>
+      <t>Thanks to Valery Smyslov for shepherding the document and Paul
+      Wouters for the AD review.</t>
     </section>
   </middle>
 

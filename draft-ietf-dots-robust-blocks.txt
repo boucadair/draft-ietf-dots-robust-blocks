@@ -5,7 +5,7 @@
 DOTS                                                        M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                              J. Shallow
-Expires: 3 March 2023                                     30 August 2022
+Expires: 4 March 2023                                     31 August 2022
 
 
    Distributed Denial-of-Service Open Threat Signaling (DOTS) Signal
@@ -15,11 +15,11 @@ Expires: 3 March 2023                                     30 August 2022
 Abstract
 
    This document specifies new DOTS signal channel configuration
-   parameters that are negotiated between DOTS peers to enable the use
-   of Q-Block1 and Q-Block2 CoAP Options.  These options enable robust
-   and faster transmission rates for large amounts of data with less
-   packet interchanges as well as supporting faster recovery should any
-   of the blocks get lost in transmission.
+   parameters that can be negotiated between DOTS peers to enable the
+   use of Q-Block1 and Q-Block2 CoAP options.  These options enable
+   robust and faster transmission rates for large amounts of data with
+   less packet interchanges as well as supporting faster recovery should
+   any of the blocks get lost in transmission.
 
    This document defines a YANG data model for representing these new
    DOTS signal channel configuration parameters.
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 March 2023.
+   This Internet-Draft will expire on 4 March 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                  [Page 1]
+Boucadair & Shallow       Expires 4 March 2023                  [Page 1]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -86,17 +86,17 @@ Table of Contents
    inspired by HTTP, was designed to use UDP instead of TCP.  The
    message layer of CoAP over UDP includes support for reliable
    delivery, simple congestion control, and flow control.  The block-
-   wise transfer [RFC7959] introduced the CoAP Block1 and Block2 Options
+   wise transfer [RFC7959] introduced the CoAP Block1 and Block2 options
    to handle data records that cannot fit in a single IP packet, so not
    having to rely on IP fragmentation.  The block-wise transfer was
    further updated by [RFC8323] for use over TCP, TLS, and WebSockets.
 
-   The CoAP Block1 and Block2 Options work well in environments where
+   The CoAP Block1 and Block2 options work well in environments where
    there are no or minimal packet losses.  These options operate
    synchronously where each individual block has to be requested and can
    only ask for (or send) the next block when the request for the
    previous block has completed.  Packet, and hence block transmission
-   rate, is controlled by Round Trip Times (RTTs).
+   rate, is controlled by Round-Trip Times (RTTs).
 
 
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                  [Page 2]
+Boucadair & Shallow       Expires 4 March 2023                  [Page 2]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -128,14 +128,14 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
    The block-wise transfer specified in [RFC7959] covers the general
    case, but falls short in situations where packet loss is highly
    asymmetrical.  The mechanism specified in [RFC9177] provides roughly
-   similar features to the Block1/Block2 Options, but provides
-   additional properties that are tailored towards the intended DOTS
-   transmission.  Concretely, [RFC9177] primarily targets applications
-   such as DDoS Open Threat Signaling (DOTS) that can't use Confirmable
-   responses to handle potential packet loss and that support
-   application-specific mechanisms to assess whether the remote peer is
-   able to handle the messages sent by a CoAP endpoint (e.g., DOTS
-   heartbeats in Section 4.7 of [RFC9132]).
+   similar features to the Block1/Block2 options, but provides
+   additional properties that are tailored towards the intended DDoS
+   Open Threat Signaling (DOTS) transmission.  Concretely, [RFC9177]
+   primarily targets applications such as DOTS that can't use
+   Confirmable responses to handle potential packet loss and that
+   support application-specific mechanisms to assess whether the remote
+   peer is able to handle the messages sent by a CoAP endpoint (e.g.,
+   DOTS heartbeats in Section 4.7 of [RFC9132]).
 
    [RFC9177] includes guards to prevent a CoAP agent from overloading
    the network by adopting an aggressive sending rate.  These guards are
@@ -150,6 +150,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
                 | MAX_PAYLOADS        |                10 |
                 | NON_MAX_RETRANSMIT  |                 4 |
                 | NON_TIMEOUT         |               2 s |
+                | NON_TIMEOUT_RANDOM  |     between 2-3 s |
                 | NON_RECEIVE_TIMEOUT |               4 s |
                 | NON_PROBING_WAIT    | between 247-248 s |
                 | NON_PARTIAL_TIMEOUT |             247 s |
@@ -164,8 +165,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-
-Boucadair & Shallow       Expires 3 March 2023                  [Page 3]
+Boucadair & Shallow       Expires 4 March 2023                  [Page 3]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -182,7 +182,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119][RFC8174] when, and only when, they appear in all
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
    Readers should be familiar with the terms and concepts defined in
@@ -214,17 +214,21 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
       MAX_PAYLOADS payloads for the same body.  NON_TIMEOUT has the same
       value as ACK_TIMEOUT (Section 4.8 of [RFC7252]).
 
-   NON_RECEIVE_TIMEOUT:  is the maximum time to wait for a missing
-      payload before requesting retransmission.  By default,
-      NON_RECEIVE_TIMEOUT has a value of twice NON_TIMEOUT.
+   NON_TIMEOUT_RANDOM:  is the initial actual delay between sending the
+      first two MAX_PAYLOADS_SETs of the same body.  It is a random
+      duration between NON_TIMEOUT and (NON_TIMEOUT *
+      ACK_RANDOM_FACTOR).
 
 
 
-
-Boucadair & Shallow       Expires 3 March 2023                  [Page 4]
+Boucadair & Shallow       Expires 4 March 2023                  [Page 4]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
+
+   NON_RECEIVE_TIMEOUT:  is the maximum time to wait for a missing
+      payload before requesting retransmission.  By default,
+      NON_RECEIVE_TIMEOUT has a value of twice NON_TIMEOUT.
 
    NON_PROBING_WAIT:  is used to limit the potential wait needed
       calculated when using PROBING_RATE.
@@ -265,7 +269,18 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
    non-timeout:  This attribute echoes the NON_TIMEOUT parameter in
       [RFC9177].  The default value of this attribute is 'ack-timeout'.
 
+      This attribute is also used to compute the NON_TIMEOUT_RANDOM
+      attribute.
+
       This is an optional attribute.
+
+
+
+
+Boucadair & Shallow       Expires 4 March 2023                  [Page 5]
+
+Internet-Draft       DOTS Robust Block Transmission          August 2022
+
 
    non-receive-timeout:  This attribute echoes the NON_RECEIVE_TIMEOUT
       parameter in [RFC9177].  The default value of this attribute is
@@ -274,22 +289,13 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
       This is an optional attribute.
 
    non-probing-wait:  This attribute echoes the NON_PROBING_WAIT
-
-
-
-Boucadair & Shallow       Expires 3 March 2023                  [Page 5]
-
-Internet-Draft       DOTS Robust Block Transmission          August 2022
-
-
-      parameter in [RFC9177].  The default value of this attribute is
-      247s.
+      parameter in [RFC9177].
 
       This is an optional attribute.
 
    non-partial-timeout:  This attribute echoes the NON_PARTIAL_TIMEOUT
       parameter in [RFC9177].  The default value of this attribute is
-      274s.
+      247 seconds.
 
       This is an optional attribute.
 
@@ -324,20 +330,20 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
      |  |  +--:(server-to-client-only)
      |  |     +-- max-value-decimal?   decimal64
      |  |     +-- min-value-decimal?   decimal64
+
+
+
+Boucadair & Shallow       Expires 4 March 2023                  [Page 6]
+
+Internet-Draft       DOTS Robust Block Transmission          August 2022
+
+
      |  +-- current-value-decimal?     decimal64
      +-- non-probing-wait
      |  +-- (direction)?
      |  |  +--:(server-to-client-only)
      |  |     +-- max-value-decimal?   decimal64
      |  |     +-- min-value-decimal?   decimal64
-
-
-
-Boucadair & Shallow       Expires 3 March 2023                  [Page 6]
-
-Internet-Draft       DOTS Robust Block Transmission          August 2022
-
-
      |  +-- current-value-decimal?     decimal64
      +-- non-partial-wait:
         +-- (direction)?
@@ -380,19 +386,20 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
      |  +-- current-value-decimal?     decimal64
      +-- non-partial-wait:
         +-- (direction)?
+
+
+
+Boucadair & Shallow       Expires 4 March 2023                  [Page 7]
+
+Internet-Draft       DOTS Robust Block Transmission          August 2022
+
+
         |  +--:(server-to-client-only)
         |     +-- max-value-decimal?   decimal64
         |     +-- min-value-decimal?   decimal64
         +-- current-value-decimal?     decimal64
 
          Figure 1: DOTS Fast Block Transmission Tree Structure
-
-
-
-Boucadair & Shallow       Expires 3 March 2023                  [Page 7]
-
-Internet-Draft       DOTS Robust Block Transmission          August 2022
-
 
    These attributes are mapped to CBOR types as specified in Section 4
    and Section 6 of [RFC9132].
@@ -416,13 +423,13 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
       explicit values are provided as part of the negotiated
       configuration.
 
-   An example of PUT message to configure Q-Block parameters is depicted
-   in Figure 2.  In this example, the 'max-payloads' attribute is set to
-   '15' when no mitigation is active, while it is set to '10' when a
-   mitigation is active.  The same value is used for 'non-max-
-   retransmit', 'non-timeout', 'non-receive-timeout', 'non-probing-
-   wait', and "non-partial-wait" in both idle and mitigation times.  The
-   meaning of other attributes is detailed in Section 4.5 of [RFC9132].
+   An example of a PUT message to configure Q-Block parameters is
+   depicted in Figure 2.  In this example, a non-default value is
+   configured for the 'max-payloads' attribute, while default values are
+   used for 'non-max-retransmit', 'non-timeout', 'non-receive-timeout',
+   and 'non-partial-wait' attributes in both idle and mitigation times.
+   The meaning of the other attributes is detailed in Section 4.5 of
+   [RFC9132].
 
         Header: PUT (Code=0.03)
         Uri-Path: ".well-known"
@@ -435,6 +442,14 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
           "ietf-dots-signal-channel:signal-config": {
             "mitigating-config": {
               "heartbeat-interval": {
+
+
+
+Boucadair & Shallow       Expires 4 March 2023                  [Page 8]
+
+Internet-Draft       DOTS Robust Block Transmission          August 2022
+
+
                 "current-value": 30
               },
               "missing-hb-allowed": {
@@ -442,14 +457,6 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
               },
               "probing-rate": {
                 "current-value": 15
-
-
-
-Boucadair & Shallow       Expires 3 March 2023                  [Page 8]
-
-Internet-Draft       DOTS Robust Block Transmission          August 2022
-
-
               },
               "max-retransmit": {
                 "current-value": 3
@@ -461,7 +468,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
                 "current-value-decimal": "1.50"
               },
               "ietf-dots-robust-trans:max-payloads": {
-                "current-value": 10
+                "current-value": 15
               },
               "ietf-dots-robust-trans:non-max-retransmit": {
                 "current-value": 3
@@ -491,21 +498,21 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
               },
               "ack-random-factor": {
                 "current-value-decimal": "1.50"
-              },
-              "ietf-dots-robust-trans:max-payloads": {
-                "current-value": 10
-              },
-              "ietf-dots-robust-trans:non-max-retransmit": {
-                "current-value": 3
-              },
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                  [Page 9]
+Boucadair & Shallow       Expires 4 March 2023                  [Page 9]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
+              },
+              "ietf-dots-robust-trans:max-payloads": {
+                "current-value": 15
+              },
+              "ietf-dots-robust-trans:non-max-retransmit": {
+                "current-value": 3
+              },
               "ietf-dots-robust-trans:non-timeout": {
                 "current-value-decimal": "2.00"
               },
@@ -550,14 +557,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-
-
-
-
-
-
-
-Boucadair & Shallow       Expires 3 March 2023                 [Page 10]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 10]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -613,7 +613,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 11]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 11]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -669,13 +669,13 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 12]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 12]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
           that are negotiated between DOTS agents when
-          making use of Q-Block1 and Q-Block2 Options.";
+          making use of Q-Block1 and Q-Block2 options.";
        container max-payloads {
          description
            "Indicates the maximum number of payloads that
@@ -725,7 +725,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 13]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 13]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -781,7 +781,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 14]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 14]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -837,7 +837,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 15]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 15]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -893,7 +893,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 16]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 16]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -903,7 +903,6 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
              fraction-digits 2;
            }
            units "seconds";
-           default "247.00";
            description
              "Current non-probing-wait value.";
            reference
@@ -946,15 +945,15 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
              fraction-digits 2;
            }
            units "seconds";
+           default "247.00";
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 17]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 17]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
-           default "247.00";
            description
              "Current non-partial-wait value.";
            reference
@@ -1005,7 +1004,8 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 18]
+
+Boucadair & Shallow       Expires 4 March 2023                 [Page 18]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -1061,7 +1061,7 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 19]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 19]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
@@ -1076,12 +1076,13 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 8.  Acknowledgements
 
-   Thanks to Tiru Reddy, Meiling Chen, and kaname nishizuka for the
+   Thanks to Tiru Reddy, Meiling Chen, and Kaname Nishizuka for the
    review.
 
    Thanks to Michal Vasko for the yangdoctors review.
 
-   Thanks to Valery Smyslov for shepherding the document.
+   Thanks to Valery Smyslov for shepherding the document and Paul
+   Wouters for the AD review.
 
 9.  References
 
@@ -1111,16 +1112,19 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
               DOI 10.17487/RFC7959, August 2016,
               <https://www.rfc-editor.org/info/rfc7959>.
 
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 20]
+
+
+Boucadair & Shallow       Expires 4 March 2023                 [Page 20]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
    [RFC8323]  Bormann, C., Lemay, S., Tschofenig, H., Hartke, K.,
               Silverajan, B., and B. Raymor, Ed., "CoAP (Constrained
@@ -1166,18 +1170,18 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 Authors' Addresses
 
-   Mohamed Boucadair
-   Orange
-   35000 Rennes
-   France
 
 
 
-Boucadair & Shallow       Expires 3 March 2023                 [Page 21]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 21]
 
 Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
+   Mohamed Boucadair
+   Orange
+   35000 Rennes
+   France
    Email: mohamed.boucadair@orange.com
 
 
@@ -1225,8 +1229,4 @@ Internet-Draft       DOTS Robust Block Transmission          August 2022
 
 
 
-
-
-
-
-Boucadair & Shallow       Expires 3 March 2023                 [Page 22]
+Boucadair & Shallow       Expires 4 March 2023                 [Page 22]
