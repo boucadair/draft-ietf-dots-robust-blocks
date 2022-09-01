@@ -86,15 +86,15 @@
     <keyword>Fast recovery</keyword>
 
     <abstract>
-      <t>This document specifies new DOTS signal channel configuration
-      parameters that can be negotiated between DOTS peers to enable the use
-      of Q-Block1 and Q-Block2 CoAP options. These options enable robust and
-      faster transmission rates for large amounts of data with less packet
-      interchanges as well as supporting faster recovery should any of the
-      blocks get lost in transmission.</t>
+      <t>This document specifies new DDoS Open Threat Signaling (DOTS) signal
+      channel configuration parameters that can be negotiated between DOTS
+      peers to enable the use of Q-Block1 and Q-Block2 CoAP options. These
+      options enable robust and faster transmission rates for large amounts of
+      data with less packet interchanges as well as supporting faster recovery
+      should any of the blocks get lost in transmission.</t>
 
-      <t>This document defines a YANG data model for representing these new
-      DOTS signal channel configuration parameters.</t>
+      <t>Also, this document defines a YANG data model for representing these
+      new DOTS signal channel configuration parameters.</t>
     </abstract>
   </front>
 
@@ -264,8 +264,8 @@ Table 1: Congestion Control Parameters]]></artwork>
           parameter in <xref target="RFC9177"></xref>. The default value of
           this attribute is 'ack-timeout'. <vspace blankLines="1" />This
           attribute is also used to compute the NON_TIMEOUT_RANDOM
-          attribute.<vspace blankLines="1" />This is an optional attribute.
-          </t>
+          attribute.<vspace blankLines="1" />This is an optional
+          attribute.</t>
 
           <t hangText="non-receive-timeout:">This attribute echoes the
           NON_RECEIVE_TIMEOUT parameter in <xref target="RFC9177"></xref>. The
@@ -398,10 +398,13 @@ Table 1: Congestion Control Parameters]]></artwork>
       <t>An example of a PUT message to configure Q-Block parameters is
       depicted in <xref target="put"></xref>. In this example, a non-default
       value is configured for the 'max-payloads' attribute, while default
-      values are used for 'non-max-retransmit', 'non-timeout',
-      'non-receive-timeout', and 'non-partial-wait' attributes in both idle
-      and mitigation times. The meaning of the other attributes is detailed in
-      Section 4.5 of <xref target="RFC9132"></xref>.</t>
+      values are used for 'non-max-retransmit', 'non-timeout', and
+      'non-receive-timeout' in both idle and mitigation times. Given that
+      'non-probing-wait' and 'non-partial-wait' are not explicitely configured
+      in this example, these attributes will be computed following the
+      algorithms in Section 7.2 of <xref target="RFC9177"></xref>. The meaning
+      of the other attributes is detailed in Section 4.5 of <xref
+      target="RFC9132"></xref>.</t>
 
       <t><figure align="center" anchor="put"
           title="Example of PUT to Convey the Configuration Parameters">
@@ -444,12 +447,6 @@ Table 1: Congestion Control Parameters]]></artwork>
            },
            "ietf-dots-robust-trans:non-receive-timeout": {
              "current-value-decimal": "4.00"
-           },
-           "ietf-dots-robust-trans:non-probing-wait": {
-             "current-value-decimal": "247.00"
-           },
-           "ietf-dots-robust-trans:non-partial-wait": {
-             "current-value-decimal": "247.00"
            }
          },
          "idle-config": {
@@ -476,12 +473,6 @@ Table 1: Congestion Control Parameters]]></artwork>
            },
            "ietf-dots-robust-trans:non-receive-timeout": {
              "current-value-decimal": "4.00"
-           },
-           "ietf-dots-robust-trans:non-probing-wait": {
-             "current-value-decimal": "247.00"
-           },
-           "ietf-dots-robust-trans:non-partial-wait": {
-             "current-value-decimal": "247.00"
            }
          }
        }
