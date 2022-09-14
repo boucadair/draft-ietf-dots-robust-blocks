@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-dots-robust-blocks-04"
+<rfc category="std" docName="draft-ietf-dots-robust-blocks-05"
      ipr="trust200902">
   <front>
     <title abbrev="DOTS Robust Block Transmission">Distributed
@@ -146,7 +146,7 @@
       rate. These guards are followed in addition to the existing CoAP
       congestion control as specified in Section 4.7 of <xref
       target="RFC7252"></xref> (mainly, PROBING_RATE). Table 1 lists the
-      additional CoAP attributes that are used for the guards (Section 7.2 of
+      additional CoAP parameters that are used for the guards (Section 7.2 of
       <xref target="RFC9177"></xref>).</t>
 
       <t><figure align="center">
@@ -167,10 +167,11 @@ Table 1: Congestion Control Parameters]]></artwork>
 
       <t>PROBING_RATE and other transmission parameters are negotiated between
       DOTS peers as discussed in Section 4.5.2 of <xref
-      target="RFC9132"></xref>. Nevertheless, the attributes listed in Table 1
+      target="RFC9132"></xref>. Nevertheless, the parameters listed in Table 1
       are not supported in <xref target="RFC9132"></xref>. This document
-      defines new DOTS signal channel attributes that are used to customize
-      the configuration of robust block transmission in a DOTS context.</t>
+      defines new DOTS signal channel attributes, corresponding to the
+      parameters in Table 1, that are used to customize the configuration of
+      robust block transmission in a DOTS context. </t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -193,9 +194,10 @@ Table 1: Congestion Control Parameters]]></artwork>
       target="RFC8340"></xref> and <xref target="RFC8791"></xref>.</t>
     </section>
 
-    <section title="DOTS Attributes for Robust Block Transmission">
+    <section anchor="new"
+             title="DOTS Attributes for Robust Block Transmission">
       <t>Section 7.2 of <xref target="RFC9177"></xref> defines the following
-      attributes that are used for congestion control purposes:<list
+      parameters that are used for congestion control purposes:<list
           style="hanging">
           <t hangText="MAX_PAYLOADS:">is the maximum number of payloads that
           can be transmitted at any one time.</t>
@@ -227,7 +229,7 @@ Table 1: Congestion Control Parameters]]></artwork>
           received bodies.</t>
         </list></t>
 
-      <t>These attributes are used together with PROBING_RATE parameter which
+      <t>These parameters are used together with PROBING_RATE parameter which
       in CoAP indicates the average data rate that must not be exceeded by a
       CoAP endpoint in sending to a peer endpoint that does not respond. The
       single body of blocks will be subjected to PROBING_RATE (Section 4.7 of
@@ -244,10 +246,10 @@ Table 1: Congestion Control Parameters]]></artwork>
       <t><list style="hanging">
           <t hangText="max-payloads:">This attribute echoes the MAX_PAYLOADS
           parameter in <xref target="RFC9177"></xref>.<vspace
-          blankLines="1" />This is an optional attribute. If the parameter is
+          blankLines="1" />This is an optional attribute. If the attribute is
           supplied in both &lsquo;idle-config&rsquo; and
           &lsquo;mitigating-config&rsquo;, then it MUST convey the same value.
-          If the parameter is only provided as part of
+          If the attribute is only provided as part of
           &lsquo;idle-config&rsquo; or &lsquo;mitigating-config&rsquo;, then
           the other (missing) definition MUST be updated to the same
           value.</t>
@@ -264,7 +266,7 @@ Table 1: Congestion Control Parameters]]></artwork>
           parameter in <xref target="RFC9177"></xref>. The default value of
           this attribute is 'ack-timeout'. <vspace blankLines="1" />This
           attribute is also used to compute the NON_TIMEOUT_RANDOM
-          attribute.<vspace blankLines="1" />This is an optional
+          parameter.<vspace blankLines="1" />This is an optional
           attribute.</t>
 
           <t hangText="non-receive-timeout:">This attribute echoes the
@@ -400,7 +402,7 @@ Table 1: Congestion Control Parameters]]></artwork>
       value is configured for the 'max-payloads' attribute, while default
       values are used for 'non-max-retransmit', 'non-timeout', and
       'non-receive-timeout' in both idle and mitigation times. Given that
-      'non-probing-wait' and 'non-partial-wait' are not explicitely configured
+      'non-probing-wait' and 'non-partial-wait' are not explicitly configured
       in this example, these attributes will be computed following the
       algorithms in Section 7.2 of <xref target="RFC9177"></xref>. The meaning
       of the other attributes is detailed in Section 4.5 of <xref
@@ -643,7 +645,7 @@ module ietf-dots-robust-trans {
     container non-max-retransmit {
       description
         "Indicates the maximum number of times a request 
-         for the retransmission of missings payloads can
+         for the retransmission of missing payloads can
          occur without a response from the remote peer.";
       choice direction {
         description
@@ -858,7 +860,7 @@ module ietf-dots-robust-trans {
                      + "/dots-signal:signal-config"
                      + "/dots-signal:mitigating-config" {
     description
-      "Indicates DOTS configuration parameters to use for
+      "Indicates DOTS configuration attributes to use for
        robust transmission when a mitigation is active.";
     uses robust-transmission-attributes;
   }
@@ -964,8 +966,9 @@ module ietf-dots-robust-trans {
 
       <t>Thanks to Michal Va&scaron;ko for the yangdoctors review.</t>
 
-      <t>Thanks to Valery Smyslov for shepherding the document and Paul
-      Wouters for the AD review.</t>
+      <t>Thanks to Valery Smyslov for shepherding the document, Paul Wouters
+      for the AD review, and Paul Kyzivat for the artart directorate
+      review.</t>
     </section>
   </middle>
 
