@@ -156,7 +156,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
    PROBING_RATE and other transmission parameters are negotiated between
    DOTS peers as discussed in Section 4.5.2 of [RFC9132].  Nevertheless,
-   negotiating the parameters listed in Table 1 are not supported in
+   negotiating the parameters listed in Table 1 is not supported in
    [RFC9132].  This document defines new DOTS signal channel attributes,
    corresponding to the parameters in Table 1, that are used to
    customize the configuration of robust block transmission in a DOTS
