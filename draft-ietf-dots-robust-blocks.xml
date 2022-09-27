@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" docName="draft-ietf-dots-robust-blocks-05"
+<rfc category="std" docName="draft-ietf-dots-robust-blocks-06"
      ipr="trust200902">
   <front>
     <title abbrev="DOTS Robust Block Transmission">Distributed
@@ -94,7 +94,9 @@
       should any of the blocks get lost in transmission.</t>
 
       <t>Also, this document defines a YANG data model for representing these
-      new DOTS signal channel configuration parameters.</t>
+      new DOTS signal channel configuration parameters. This model augments
+      the DOTS signal YANG module ("ietf-dots-signal-channel") defined in RFC
+      9132.</t>
     </abstract>
   </front>
 
@@ -167,11 +169,11 @@ Table 1: Congestion Control Parameters]]></artwork>
 
       <t>PROBING_RATE and other transmission parameters are negotiated between
       DOTS peers as discussed in Section 4.5.2 of <xref
-      target="RFC9132"></xref>. Nevertheless, the parameters listed in Table 1
-      are not supported in <xref target="RFC9132"></xref>. This document
-      defines new DOTS signal channel attributes, corresponding to the
-      parameters in Table 1, that are used to customize the configuration of
-      robust block transmission in a DOTS context. </t>
+      target="RFC9132"></xref>. Nevertheless, negotiating the parameters
+      listed in Table 1 are not supported in <xref target="RFC9132"></xref>.
+      This document defines new DOTS signal channel attributes, corresponding
+      to the parameters in Table 1, that are used to customize the
+      configuration of robust block transmission in a DOTS context.</t>
     </section>
 
     <section anchor="notation" title="Terminology">
@@ -967,8 +969,8 @@ module ietf-dots-robust-trans {
       <t>Thanks to Michal Va&scaron;ko for the yangdoctors review.</t>
 
       <t>Thanks to Valery Smyslov for shepherding the document, Paul Wouters
-      for the AD review, and Paul Kyzivat for the artart directorate
-      review.</t>
+      for the AD review, Paul Kyzivat for the artart directorate review, and
+      Tim Evens for the Gen-ART review.</t>
     </section>
   </middle>
 

@@ -5,12 +5,12 @@
 DOTS                                                        M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                              J. Shallow
-Expires: 18 March 2023                                 14 September 2022
+Expires: 31 March 2023                                 27 September 2022
 
 
    Distributed Denial-of-Service Open Threat Signaling (DOTS) Signal
      Channel Configuration Attributes for Robust Block Transmission
-                    draft-ietf-dots-robust-blocks-05
+                    draft-ietf-dots-robust-blocks-06
 
 Abstract
 
@@ -22,7 +22,9 @@ Abstract
    recovery should any of the blocks get lost in transmission.
 
    Also, this document defines a YANG data model for representing these
-   new DOTS signal channel configuration parameters.
+   new DOTS signal channel configuration parameters.  This model
+   augments the DOTS signal YANG module ("ietf-dots-signal-channel")
+   defined in RFC 9132.
 
 Status of This Memo
 
@@ -39,25 +41,27 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 March 2023.
+   This Internet-Draft will expire on 31 March 2023.
 
 Copyright Notice
 
    Copyright (c) 2022 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
-   This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents (https://trustee.ietf.org/
-   license-info) in effect on the date of publication of this document.
-   Please review these documents carefully, as they describe your rights
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                 [Page 1]
+
+
+Boucadair & Shallow       Expires 31 March 2023                 [Page 1]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
    extracted from this document must include Revised BSD License text as
    described in Section 4.e of the Trust Legal Provisions and are
@@ -98,26 +102,18 @@ Table of Contents
    previous block has completed.  Packet, and hence block transmission
    rate, is controlled by Round-Trip Times (RTTs).
 
-
-
-
-
-
-
-
-
-
-
-
-Boucadair & Shallow       Expires 18 March 2023                 [Page 2]
-
-Internet-Draft       DOTS Robust Block Transmission       September 2022
-
-
    There is a requirement for these blocks of data to be transmitted at
    higher rates under network conditions where there may be asymmetrical
    transient packet loss (i.e., responses may get dropped).  An example
    is when a network is subject to a Distributed Denial of Service
+
+
+
+Boucadair & Shallow       Expires 31 March 2023                 [Page 2]
+
+Internet-Draft       DOTS Robust Block Transmission       September 2022
+
+
    (DDoS) attack and there is a need for DDoS mitigation agents relying
    upon CoAP to communicate with each other (e.g., [RFC9244]).  As a
    reminder, [RFC7959] recommends the use of Confirmable (CON) responses
@@ -160,19 +156,19 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
    PROBING_RATE and other transmission parameters are negotiated between
    DOTS peers as discussed in Section 4.5.2 of [RFC9132].  Nevertheless,
-   the parameters listed in Table 1 are not supported in [RFC9132].
-   This document defines new DOTS signal channel attributes,
-
-
-
-Boucadair & Shallow       Expires 18 March 2023                 [Page 3]
-
-Internet-Draft       DOTS Robust Block Transmission       September 2022
-
-
+   negotiating the parameters listed in Table 1 are not supported in
+   [RFC9132].  This document defines new DOTS signal channel attributes,
    corresponding to the parameters in Table 1, that are used to
    customize the configuration of robust block transmission in a DOTS
    context.
+
+
+
+
+Boucadair & Shallow       Expires 31 March 2023                 [Page 3]
+
+Internet-Draft       DOTS Robust Block Transmission       September 2022
+
 
 2.  Terminology
 
@@ -217,20 +213,18 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
       ACK_RANDOM_FACTOR).
 
    NON_RECEIVE_TIMEOUT:  is the maximum time to wait for a missing
-
-
-
-
-Boucadair & Shallow       Expires 18 March 2023                 [Page 4]
-
-Internet-Draft       DOTS Robust Block Transmission       September 2022
-
-
       payload before requesting retransmission.  By default,
       NON_RECEIVE_TIMEOUT has a value of twice NON_TIMEOUT.
 
    NON_PROBING_WAIT:  is used to limit the potential wait needed
       calculated when using PROBING_RATE.
+
+
+
+Boucadair & Shallow       Expires 31 March 2023                 [Page 4]
+
+Internet-Draft       DOTS Robust Block Transmission       September 2022
+
 
    NON_PARTIAL_TIMEOUT:  is used for expiring partially received bodies.
 
@@ -274,20 +268,20 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
       This is an optional attribute.
 
    non-receive-timeout:  This attribute echoes the NON_RECEIVE_TIMEOUT
-
-
-
-Boucadair & Shallow       Expires 18 March 2023                 [Page 5]
-
-Internet-Draft       DOTS Robust Block Transmission       September 2022
-
-
       parameter in [RFC9177].  The default value of this attribute is
       twice 'non-timeout'.
 
       This is an optional attribute.
 
    non-probing-wait:  This attribute echoes the NON_PROBING_WAIT
+
+
+
+Boucadair & Shallow       Expires 31 March 2023                 [Page 5]
+
+Internet-Draft       DOTS Robust Block Transmission       September 2022
+
+
       parameter in [RFC9177].
 
       This is an optional attribute.
@@ -330,20 +324,20 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
      |  |     +-- max-value-decimal?   decimal64
      |  |     +-- min-value-decimal?   decimal64
      |  +-- current-value-decimal?     decimal64
-
-
-
-Boucadair & Shallow       Expires 18 March 2023                 [Page 6]
-
-Internet-Draft       DOTS Robust Block Transmission       September 2022
-
-
      +-- non-probing-wait
      |  +-- (direction)?
      |  |  +--:(server-to-client-only)
      |  |     +-- max-value-decimal?   decimal64
      |  |     +-- min-value-decimal?   decimal64
      |  +-- current-value-decimal?     decimal64
+
+
+
+Boucadair & Shallow       Expires 31 March 2023                 [Page 6]
+
+Internet-Draft       DOTS Robust Block Transmission       September 2022
+
+
      +-- non-partial-wait:
         +-- (direction)?
         |  +--:(server-to-client-only)
@@ -386,19 +380,19 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
      +-- non-partial-wait:
         +-- (direction)?
         |  +--:(server-to-client-only)
-
-
-
-Boucadair & Shallow       Expires 18 March 2023                 [Page 7]
-
-Internet-Draft       DOTS Robust Block Transmission       September 2022
-
-
         |     +-- max-value-decimal?   decimal64
         |     +-- min-value-decimal?   decimal64
         +-- current-value-decimal?     decimal64
 
          Figure 1: DOTS Fast Block Transmission Tree Structure
+
+
+
+
+Boucadair & Shallow       Expires 31 March 2023                 [Page 7]
+
+Internet-Draft       DOTS Robust Block Transmission       September 2022
+
 
    These attributes are mapped to CBOR types as specified in Section 4
    and Section 6 of [RFC9132].
@@ -442,20 +436,20 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
         {
           "ietf-dots-signal-channel:signal-config": {
             "mitigating-config": {
-
-
-
-Boucadair & Shallow       Expires 18 March 2023                 [Page 8]
-
-Internet-Draft       DOTS Robust Block Transmission       September 2022
-
-
               "heartbeat-interval": {
                 "current-value": 30
               },
               "missing-hb-allowed": {
                 "current-value": 15
               },
+
+
+
+Boucadair & Shallow       Expires 31 March 2023                 [Page 8]
+
+Internet-Draft       DOTS Robust Block Transmission       September 2022
+
+
               "probing-rate": {
                 "current-value": 15
               },
@@ -498,20 +492,20 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
                 "current-value": 15
               },
               "ietf-dots-robust-trans:non-max-retransmit": {
-
-
-
-Boucadair & Shallow       Expires 18 March 2023                 [Page 9]
-
-Internet-Draft       DOTS Robust Block Transmission       September 2022
-
-
                 "current-value": 3
               },
               "ietf-dots-robust-trans:non-timeout": {
                 "current-value-decimal": "2.00"
               },
               "ietf-dots-robust-trans:non-receive-timeout": {
+
+
+
+Boucadair & Shallow       Expires 31 March 2023                 [Page 9]
+
+Internet-Draft       DOTS Robust Block Transmission       September 2022
+
+
                 "current-value-decimal": "4.00"
               }
             }
@@ -557,7 +551,13 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 10]
+
+
+
+
+
+
+Boucadair & Shallow       Expires 31 March 2023                [Page 10]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -613,7 +613,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 11]
+Boucadair & Shallow       Expires 31 March 2023                [Page 11]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -669,7 +669,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 12]
+Boucadair & Shallow       Expires 31 March 2023                [Page 12]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -725,7 +725,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 13]
+Boucadair & Shallow       Expires 31 March 2023                [Page 13]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -781,7 +781,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 14]
+Boucadair & Shallow       Expires 31 March 2023                [Page 14]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -837,7 +837,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 15]
+Boucadair & Shallow       Expires 31 March 2023                [Page 15]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -893,7 +893,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 16]
+Boucadair & Shallow       Expires 31 March 2023                [Page 16]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -949,7 +949,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 17]
+Boucadair & Shallow       Expires 31 March 2023                [Page 17]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -1005,7 +1005,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 18]
+Boucadair & Shallow       Expires 31 March 2023                [Page 18]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -1061,7 +1061,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 19]
+Boucadair & Shallow       Expires 31 March 2023                [Page 19]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -1082,8 +1082,8 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
    Thanks to Michal Vasko for the yangdoctors review.
 
    Thanks to Valery Smyslov for shepherding the document, Paul Wouters
-   for the AD review, and Paul Kyzivat for the artart directorate
-   review.
+   for the AD review, Paul Kyzivat for the artart directorate review,
+   and Tim Evens for the Gen-ART review.
 
 9.  References
 
@@ -1117,7 +1117,7 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 20]
+Boucadair & Shallow       Expires 31 March 2023                [Page 20]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -1173,7 +1173,7 @@ Authors' Addresses
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 21]
+Boucadair & Shallow       Expires 31 March 2023                [Page 21]
 
 Internet-Draft       DOTS Robust Block Transmission       September 2022
 
@@ -1229,4 +1229,4 @@ Internet-Draft       DOTS Robust Block Transmission       September 2022
 
 
 
-Boucadair & Shallow       Expires 18 March 2023                [Page 22]
+Boucadair & Shallow       Expires 31 March 2023                [Page 22]
