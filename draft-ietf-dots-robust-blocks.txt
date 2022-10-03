@@ -19,7 +19,8 @@ Abstract
    peers to enable the use of Q-Block1 and Q-Block2 CoAP options.  These
    options enable robust and faster transmission rates for large amounts
    of data with less packet interchanges as well as supporting faster
-   recovery should any of the blocks get lost in transmission.
+   recovery should any of the blocks get lost in transmission
+   (especially, during DDoS attacks).
 
    Also, this document defines a YANG data model for representing these
    new DOTS signal channel configuration parameters.  This model
@@ -47,7 +48,6 @@ Copyright Notice
 
    Copyright (c) 2022 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
-
 
 
 
@@ -104,7 +104,7 @@ Table of Contents
 
    There is a requirement for these blocks of data to be transmitted at
    higher rates under network conditions where there may be asymmetrical
-   transient packet loss (i.e., responses may get dropped).  An example
+   transient packet loss (e.g., responses may get dropped).  An example
    is when a network is subject to a Distributed Denial of Service
 
 
@@ -138,7 +138,8 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
    followed in addition to the existing CoAP congestion control as
    specified in Section 4.7 of [RFC7252] (mainly, PROBING_RATE).
    Table 1 lists the additional CoAP parameters that are used for the
-   guards (Section 7.2 of [RFC9177]).
+   guards (Section 7.2 of [RFC9177]).  Note that NON in this table
+   refers to Non-confirmable.
 
                 +---------------------+-------------------+
                 | Parameter Name      |     Default Value |
@@ -161,7 +162,6 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
    corresponding to the parameters in Table 1, that are used to
    customize the configuration of robust block transmission in a DOTS
    context.
-
 
 
 
@@ -862,8 +862,8 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
        }
        container non-probing-wait {
          description
-           "Is used to limit the potential wait needed
-            when using probing-rate.";
+           "Is used to limit the potential wait needed when
+            using probing-rate.";
          choice direction {
            description
              "Indicates the communication direction in which the
@@ -1085,8 +1085,8 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
    for the AD review, Paul Kyzivat for the artart directorate review,
    and Tim Evens for the Gen-ART review.
 
-   Thanks to John Scudder and Lars Eggert for the comments during the
-   IESG review.
+   Thanks to John Scudder, Lars Eggert, and Eric Vyncke for the comments
+   during the IESG review.
 
 9.  References
 
