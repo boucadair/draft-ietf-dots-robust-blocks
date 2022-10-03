@@ -225,7 +225,7 @@ Table 1: Congestion Control Parameters]]></artwork>
           NON_RECEIVE_TIMEOUT has a value of twice NON_TIMEOUT.</t>
 
           <t hangText="NON_PROBING_WAIT:">is used to limit the potential wait
-          needed calculated when using PROBING_RATE.</t>
+          needed when using PROBING_RATE.</t>
 
           <t hangText="NON_PARTIAL_TIMEOUT:">is used for expiring partially
           received bodies.</t>
@@ -236,9 +236,9 @@ Table 1: Congestion Control Parameters]]></artwork>
       CoAP endpoint in sending to a peer endpoint that does not respond. The
       single body of blocks will be subjected to PROBING_RATE (Section 4.7 of
       <xref target="RFC7252"></xref>), not the individual packets. If the wait
-      time between sending bodies that are not being responded to calculated
-      using on PROBING_RATE exceeds NON_PROBING_WAIT, then the gap time is
-      limited to NON_PROBING_WAIT.</t>
+      time between sending bodies that are not being responded to based on
+      PROBING_RATE exceeds NON_PROBING_WAIT, then the wait time is limited to
+      NON_PROBING_WAIT.</t>
 
       <t>This document augments the "ietf-dots-signal-channel" DOTS signal
       YANG module defined in Section 5.3 of <xref target="RFC9132"></xref>
@@ -771,7 +771,7 @@ module ietf-dots-robust-trans {
     }
     container non-probing-wait {
       description
-        "Is used to limit the potential wait needed calculated 
+        "Is used to limit the potential wait needed 
          when using probing-rate.";
       choice direction {
         description
@@ -972,7 +972,8 @@ module ietf-dots-robust-trans {
       for the AD review, Paul Kyzivat for the artart directorate review, and
       Tim Evens for the Gen-ART review.</t>
 
-      <t>Thanks to John Scudder for the IESG review. </t>
+      <t>Thanks to John Scudder and Lars Eggert for the comments during the
+      IESG review.</t>
     </section>
   </middle>
 
