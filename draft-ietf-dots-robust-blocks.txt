@@ -5,7 +5,7 @@
 DOTS                                                        M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                              J. Shallow
-Expires: 6 April 2023                                     3 October 2022
+Expires: 7 April 2023                                     4 October 2022
 
 
    Distributed Denial-of-Service Open Threat Signaling (DOTS) Signal
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 April 2023.
+   This Internet-Draft will expire on 7 April 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                  [Page 1]
+Boucadair & Shallow       Expires 7 April 2023                  [Page 1]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                  [Page 2]
+Boucadair & Shallow       Expires 7 April 2023                  [Page 2]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -165,7 +165,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                  [Page 3]
+Boucadair & Shallow       Expires 7 April 2023                  [Page 3]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -221,7 +221,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                  [Page 4]
+Boucadair & Shallow       Expires 7 April 2023                  [Page 4]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -277,7 +277,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                  [Page 5]
+Boucadair & Shallow       Expires 7 April 2023                  [Page 5]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -333,7 +333,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                  [Page 6]
+Boucadair & Shallow       Expires 7 April 2023                  [Page 6]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -389,7 +389,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                  [Page 7]
+Boucadair & Shallow       Expires 7 April 2023                  [Page 7]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -445,7 +445,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                  [Page 8]
+Boucadair & Shallow       Expires 7 April 2023                  [Page 8]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -501,7 +501,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                  [Page 9]
+Boucadair & Shallow       Expires 7 April 2023                  [Page 9]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -557,7 +557,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 10]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 10]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -595,8 +595,6 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 5.  DOTS Robust Block Transmission YANG Module
 
-   The "ietf-dots-robust-trans" module is not intended to be used via
-   NETCONF/RESTCONF; it serves only to provide abstract data structures.
    This module uses the data structure extension defined in [RFC8791].
 
    <CODE BEGINS> file "ietf-dots-robust-trans@2022-01-04.yang"
@@ -610,16 +608,16 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
        reference
          "RFC 9132: Distributed Denial-of-Service Open Threat
                     Signaling (DOTS) Signal Channel Specification";
+     }
+     import ietf-yang-structure-ext {
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 11]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 11]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
-     }
-     import ietf-yang-structure-ext {
        prefix sx;
        reference
          "RFC 8791: YANG Data Structure Extensions";
@@ -666,16 +664,16 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
      grouping robust-transmission-attributes {
        description
          "A set of DOTS signal channel session configuration
+          that are negotiated between DOTS agents when
+          making use of Q-Block1 and Q-Block2 options.";
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 12]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 12]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
-          that are negotiated between DOTS agents when
-          making use of Q-Block1 and Q-Block2 options.";
        container max-payloads {
          description
            "Indicates the maximum number of payloads that
@@ -722,16 +720,16 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
               data nodes can be included.";
            case server-to-client-only {
              description
+               "These data nodes appear only in a message sent
+                from the server to the client.";
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 13]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 13]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
-               "These data nodes appear only in a message sent
-                from the server to the client.";
              leaf max-value {
                type uint16;
                description
@@ -778,16 +776,16 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
              }
              leaf min-value-decimal {
                type decimal64 {
+                 fraction-digits 2;
+               }
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 14]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 14]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
-                 fraction-digits 2;
-               }
                units "seconds";
                description
                  "Minimum ack-timeout value.";
@@ -834,16 +832,16 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
                }
                units "seconds";
                description
+                 "Minimum non-receive-timeout value.";
+             }
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 15]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 15]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
-                 "Minimum non-receive-timeout value.";
-             }
            }
          }
          leaf current-value-decimal {
@@ -890,16 +888,16 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
              }
            }
          }
+         leaf current-value-decimal {
+           type decimal64 {
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 16]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 16]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
-         leaf current-value-decimal {
-           type decimal64 {
              fraction-digits 2;
            }
            units "seconds";
@@ -946,16 +944,16 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
            }
            units "seconds";
            default "247.00";
+           description
+             "Current non-partial-wait value.";
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 17]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 17]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
-           description
-             "Current non-partial-wait value.";
            reference
              "RFC 9177: Constrained Application Protocol (CoAP)
                         Block-Wise Transfer Options Supporting
@@ -1005,7 +1003,9 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 18]
+
+
+Boucadair & Shallow       Expires 7 April 2023                 [Page 18]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -1061,7 +1061,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 19]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 19]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -1069,10 +1069,11 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
    CoAP-specific security considerations are discussed in Section 11 of
    [RFC9177].
 
-   This document defines YANG data structures that are meant to be used
-   as an abstract representation in DOTS signal channel messages.  As
-   such, the "ietf-dots-robust-trans" module (Section 5) does not
-   introduce any new vulnerabilities beyond those specified above.
+   Consistent with Section 5 of [RFC9132], the "ietf-dots-robust-trans"
+   module is not intended to be used via NETCONF/RESTCONF.  It serves as
+   an abstract representation in DOTS signal channel messages.  The
+   "ietf-dots-robust-trans" module does not introduce any new
+   vulnerabilities beyond those specified above.
 
 8.  Acknowledgements
 
@@ -1085,8 +1086,8 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
    for the AD review, Paul Kyzivat for the artart directorate review,
    and Tim Evens for the Gen-ART review.
 
-   Thanks to John Scudder, Lars Eggert, and Eric Vyncke for the comments
-   during the IESG review.
+   Thanks to John Scudder, Lars Eggert, Eric Vyncke, and Roman Danyliw
+   for the comments during the IESG review.
 
 9.  References
 
@@ -1116,8 +1117,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-
-Boucadair & Shallow       Expires 6 April 2023                 [Page 20]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 20]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -1173,7 +1173,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 21]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 21]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -1229,4 +1229,4 @@ Authors' Addresses
 
 
 
-Boucadair & Shallow       Expires 6 April 2023                 [Page 22]
+Boucadair & Shallow       Expires 7 April 2023                 [Page 22]

@@ -210,7 +210,7 @@ Table 1: Congestion Control Parameters]]></artwork>
           request for the retransmission of missing payloads can occur without
           a response from the remote peer. By default, NON_MAX_RETRANSMIT has
           the same value as MAX_RETRANSMIT (Section 4.8 of <xref
-          target="RFC7252"></xref>). </t>
+          target="RFC7252"></xref>).</t>
 
           <t hangText="NON_TIMEOUT:">is the maximum period of delay between
           sending sets of MAX_PAYLOADS payloads for the same body. NON_TIMEOUT
@@ -544,9 +544,7 @@ Table 1: Congestion Control Parameters]]></artwork>
 
     <section anchor="module"
              title="DOTS Robust Block Transmission YANG Module">
-      <t>The "ietf-dots-robust-trans" module is not intended to be used via
-      NETCONF/RESTCONF; it serves only to provide abstract data structures.
-      This module uses the data structure extension defined in <xref
+      <t>This module uses the data structure extension defined in <xref
       target="RFC8791"></xref>.</t>
 
       <t><figure>
@@ -958,10 +956,11 @@ module ietf-dots-robust-trans {
       <t>CoAP-specific security considerations are discussed in Section 11 of
       <xref target="RFC9177"></xref>.</t>
 
-      <t>This document defines YANG data structures that are meant to be used
-      as an abstract representation in DOTS signal channel messages. As such,
-      the "ietf-dots-robust-trans" module (<xref target="module"></xref>) does
-      not introduce any new vulnerabilities beyond those specified above.</t>
+      <t>Consistent with Section 5 of <xref target="RFC9132"></xref>, the
+      "ietf-dots-robust-trans" module is not intended to be used via
+      NETCONF/RESTCONF. It serves as an abstract representation in DOTS signal
+      channel messages. The "ietf-dots-robust-trans" module does not introduce
+      any new vulnerabilities beyond those specified above.</t>
     </section>
 
     <section anchor="ack" title="Acknowledgements">
@@ -974,8 +973,8 @@ module ietf-dots-robust-trans {
       for the AD review, Paul Kyzivat for the artart directorate review, and
       Tim Evens for the Gen-ART review.</t>
 
-      <t>Thanks to John Scudder, Lars Eggert, and &Eacute;ric Vyncke for the
-      comments during the IESG review.</t>
+      <t>Thanks to John Scudder, Lars Eggert, &Eacute;ric Vyncke, and Roman
+      Danyliw for the comments during the IESG review.</t>
     </section>
   </middle>
 
