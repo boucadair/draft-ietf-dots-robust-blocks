@@ -266,26 +266,28 @@ Table 1: Congestion Control Parameters]]></artwork>
           max-transmit. <vspace blankLines="1" />This is an optional
           attribute.</t>
 
-          <t hangText="non-timeout:">This attribute echoes the NON_TIMEOUT
-          parameter in <xref target="RFC9177"></xref>. The default value of
-          this attribute is 'ack-timeout'. <vspace blankLines="1" />This
-          attribute is also used to compute the NON_TIMEOUT_RANDOM
-          parameter.<vspace blankLines="1" />This is an optional
+          <t hangText="non-timeout:">This attribute, expressed in seconds,
+          echoes the NON_TIMEOUT parameter in <xref target="RFC9177"></xref>.
+          The default value of this attribute is 'ack-timeout'.<vspace
+          blankLines="1" />This attribute is also used to compute the
+          NON_TIMEOUT_RANDOM parameter.<vspace blankLines="1" />This is an
+          optional attribute.</t>
+
+          <t hangText="non-receive-timeout:">This attribute, expressed in
+          seconds, echoes the NON_RECEIVE_TIMEOUT parameter in <xref
+          target="RFC9177"></xref>. The default value of this attribute is
+          twice 'non-timeout'.<vspace blankLines="1" />This is an optional
           attribute.</t>
 
-          <t hangText="non-receive-timeout:">This attribute echoes the
-          NON_RECEIVE_TIMEOUT parameter in <xref target="RFC9177"></xref>. The
-          default value of this attribute is twice 'non-timeout'.<vspace
-          blankLines="1" />This is an optional attribute.</t>
+          <t hangText="non-probing-wait:">This attribute, expressed in
+          seconds, echoes the NON_PROBING_WAIT parameter in <xref
+          target="RFC9177"></xref>. <vspace blankLines="1" />This is an
+          optional attribute.</t>
 
-          <t hangText="non-probing-wait:">This attribute echoes the
-          NON_PROBING_WAIT parameter in <xref target="RFC9177"></xref>.
-          <vspace blankLines="1" />This is an optional attribute.</t>
-
-          <t hangText="non-partial-timeout:">This attribute echoes the
-          NON_PARTIAL_TIMEOUT parameter in <xref target="RFC9177"></xref>. The
-          default value of this attribute is 247 seconds.<vspace
-          blankLines="1" />This is an optional attribute.</t>
+          <t hangText="non-partial-timeout:">This attribute, expressed in
+          seconds, echoes the NON_PARTIAL_TIMEOUT parameter in <xref
+          target="RFC9177"></xref>. The default value of this attribute is 247
+          seconds.<vspace blankLines="1" />This is an optional attribute.</t>
         </list></t>
 
       <t>The tree structure of the "ietf-dots-robust-trans" module (<xref
@@ -974,8 +976,8 @@ module ietf-dots-robust-trans {
       Evens for the Gen-ART review, and Jean-Michel Combes for the int-dir
       review.</t>
 
-      <t>Thanks to John Scudder, Lars Eggert, &Eacute;ric Vyncke, and Roman
-      Danyliw for the comments during the IESG review.</t>
+      <t>Thanks to John Scudder, Lars Eggert, &Eacute;ric Vyncke, Roman
+      Danyliw, and Rob Wilton for the comments during the IESG review.</t>
     </section>
   </middle>
 

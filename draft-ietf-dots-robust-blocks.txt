@@ -260,20 +260,20 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
       This is an optional attribute.
 
-   non-timeout:  This attribute echoes the NON_TIMEOUT parameter in
-      [RFC9177].  The default value of this attribute is 'ack-timeout'.
+   non-timeout:  This attribute, expressed in seconds, echoes the
+      NON_TIMEOUT parameter in [RFC9177].  The default value of this
+      attribute is 'ack-timeout'.
 
       This attribute is also used to compute the NON_TIMEOUT_RANDOM
       parameter.
 
       This is an optional attribute.
 
-   non-receive-timeout:  This attribute echoes the NON_RECEIVE_TIMEOUT
-      parameter in [RFC9177].  The default value of this attribute is
-      twice 'non-timeout'.
+   non-receive-timeout:  This attribute, expressed in seconds, echoes
+      the NON_RECEIVE_TIMEOUT parameter in [RFC9177].  The default value
+      of this attribute is twice 'non-timeout'.
 
       This is an optional attribute.
-
 
 
 
@@ -282,14 +282,14 @@ Boucadair & Shallow       Expires 8 April 2023                  [Page 5]
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
-   non-probing-wait:  This attribute echoes the NON_PROBING_WAIT
-      parameter in [RFC9177].
+   non-probing-wait:  This attribute, expressed in seconds, echoes the
+      NON_PROBING_WAIT parameter in [RFC9177].
 
       This is an optional attribute.
 
-   non-partial-timeout:  This attribute echoes the NON_PARTIAL_TIMEOUT
-      parameter in [RFC9177].  The default value of this attribute is
-      247 seconds.
+   non-partial-timeout:  This attribute, expressed in seconds, echoes
+      the NON_PARTIAL_TIMEOUT parameter in [RFC9177].  The default value
+      of this attribute is 247 seconds.
 
       This is an optional attribute.
 
@@ -1087,8 +1087,8 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
    Tim Evens for the Gen-ART review, and Jean-Michel Combes for the int-
    dir review.
 
-   Thanks to John Scudder, Lars Eggert, Eric Vyncke, and Roman Danyliw
-   for the comments during the IESG review.
+   Thanks to John Scudder, Lars Eggert, Eric Vyncke, Roman Danyliw, and
+   Rob Wilton for the comments during the IESG review.
 
 9.  References
 
