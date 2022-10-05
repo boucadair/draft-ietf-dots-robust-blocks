@@ -5,7 +5,7 @@
 DOTS                                                        M. Boucadair
 Internet-Draft                                                    Orange
 Intended status: Standards Track                              J. Shallow
-Expires: 7 April 2023                                     4 October 2022
+Expires: 8 April 2023                                     5 October 2022
 
 
    Distributed Denial-of-Service Open Threat Signaling (DOTS) Signal
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 April 2023.
+   This Internet-Draft will expire on 8 April 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                  [Page 1]
+Boucadair & Shallow       Expires 8 April 2023                  [Page 1]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                  [Page 2]
+Boucadair & Shallow       Expires 8 April 2023                  [Page 2]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -165,7 +165,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                  [Page 3]
+Boucadair & Shallow       Expires 8 April 2023                  [Page 3]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -221,7 +221,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                  [Page 4]
+Boucadair & Shallow       Expires 8 April 2023                  [Page 4]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -277,7 +277,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                  [Page 5]
+Boucadair & Shallow       Expires 8 April 2023                  [Page 5]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -333,7 +333,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                  [Page 6]
+Boucadair & Shallow       Expires 8 April 2023                  [Page 6]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -389,7 +389,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                  [Page 7]
+Boucadair & Shallow       Expires 8 April 2023                  [Page 7]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -445,7 +445,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                  [Page 8]
+Boucadair & Shallow       Expires 8 April 2023                  [Page 8]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -501,7 +501,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                  [Page 9]
+Boucadair & Shallow       Expires 8 April 2023                  [Page 9]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -557,7 +557,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 10]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 10]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -613,7 +613,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 11]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 11]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -669,7 +669,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 12]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 12]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -725,7 +725,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 13]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 13]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -781,7 +781,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 14]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 14]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -837,7 +837,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 15]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 15]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -893,7 +893,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 16]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 16]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -949,7 +949,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 17]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 17]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -1005,7 +1005,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 18]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 18]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -1061,7 +1061,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 19]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 19]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -1084,7 +1084,8 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
    Thanks to Valery Smyslov for shepherding the document, Paul Wouters
    for the AD review, Paul Kyzivat for the artart directorate review,
-   and Tim Evens for the Gen-ART review.
+   Tim Evens for the Gen-ART review, and Jean-Michel Combes for the int-
+   dir review.
 
    Thanks to John Scudder, Lars Eggert, Eric Vyncke, and Roman Danyliw
    for the comments during the IESG review.
@@ -1116,8 +1117,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-
-Boucadair & Shallow       Expires 7 April 2023                 [Page 20]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 20]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -1173,7 +1173,7 @@ Internet-Draft       DOTS Robust Block Transmission         October 2022
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 21]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 21]
 
 Internet-Draft       DOTS Robust Block Transmission         October 2022
 
@@ -1229,4 +1229,4 @@ Authors' Addresses
 
 
 
-Boucadair & Shallow       Expires 7 April 2023                 [Page 22]
+Boucadair & Shallow       Expires 8 April 2023                 [Page 22]

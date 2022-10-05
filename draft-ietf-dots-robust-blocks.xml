@@ -970,8 +970,9 @@ module ietf-dots-robust-trans {
       <t>Thanks to Michal Va&scaron;ko for the yangdoctors review.</t>
 
       <t>Thanks to Valery Smyslov for shepherding the document, Paul Wouters
-      for the AD review, Paul Kyzivat for the artart directorate review, and
-      Tim Evens for the Gen-ART review.</t>
+      for the AD review, Paul Kyzivat for the artart directorate review, Tim
+      Evens for the Gen-ART review, and Jean-Michel Combes for the int-dir
+      review.</t>
 
       <t>Thanks to John Scudder, Lars Eggert, &Eacute;ric Vyncke, and Roman
       Danyliw for the comments during the IESG review.</t>
